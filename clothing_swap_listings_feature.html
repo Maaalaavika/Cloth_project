@@ -1,0 +1,1282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SwapCloset — Premium Clothing Swaps</title>
+  <!-- Premium Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <!-- Tabler Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+  
+  <style>
+    :root {
+      --bg-primary: #fbfaf8;
+      --bg-secondary: #f3f0e9;
+      --bg-white: #ffffff;
+      --text-primary: #1e1d1b;
+      --text-secondary: #65625b;
+      --text-tertiary: #a4a095;
+      
+      --color-primary: #3c5846; /* Sage Green */
+      --color-primary-light: #e9eede;
+      --color-primary-hover: #2f4537;
+      
+      --color-accent: #b85835; /* Terracotta Rust */
+      --color-accent-light: #fbeee8;
+      --color-accent-hover: #9c4728;
+      
+      --border-color: #e3dec9;
+      --border-light: #ece8da;
+      
+      --shadow-sm: 0 2px 8px rgba(30, 29, 27, 0.04);
+      --shadow-md: 0 8px 24px rgba(30, 29, 27, 0.06);
+      --shadow-lg: 0 16px 40px rgba(30, 29, 27, 0.08);
+      
+      --radius-sm: 6px;
+      --radius-md: 12px;
+      --radius-lg: 20px;
+      --font-serif: 'Playfair Display', Georgia, serif;
+      --font-sans: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Elegant Sticky Navigation Header */
+    header {
+      background: rgba(251, 250, 248, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-light);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      padding: 16px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .brand-logo {
+      font-family: var(--font-serif);
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      color: var(--color-primary);
+    }
+
+    .brand-logo span {
+      color: var(--color-accent);
+    }
+
+    .header-user {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-secondary);
+    }
+
+    .user-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--color-primary-light);
+      color: var(--color-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      border: 1px solid var(--border-color);
+    }
+
+    /* Main Container */
+    main {
+      flex: 1;
+      max-width: 1200px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Premium Sliding-style Tabs navigation */
+    .tabs-wrapper {
+      background: var(--bg-secondary);
+      padding: 6px;
+      border-radius: var(--radius-lg);
+      margin-bottom: 32px;
+      align-self: center;
+      display: flex;
+      gap: 4px;
+      border: 1px solid var(--border-light);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .tab {
+      padding: 10px 24px;
+      font-family: var(--font-sans);
+      font-size: 14px;
+      font-weight: 500;
+      border-radius: 14px;
+      cursor: pointer;
+      border: none;
+      color: var(--text-secondary);
+      background: transparent;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .tab:hover {
+      color: var(--text-primary);
+    }
+
+    .tab.active {
+      background: var(--bg-white);
+      color: var(--color-primary);
+      box-shadow: 0 4px 12px rgba(30, 29, 27, 0.05);
+      font-weight: 700;
+    }
+
+    /* Panels Container */
+    .panel {
+      display: none;
+      animation: fadeInUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .panel.active {
+      display: block;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Common Form & Section Styling */
+    .section-title {
+      font-family: var(--font-serif);
+      font-size: 24px;
+      color: var(--color-primary);
+      margin-bottom: 24px;
+      font-weight: 600;
+    }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-bottom: 12px;
+      border-bottom: 1px solid var(--border-light);
+      padding-bottom: 6px;
+    }
+
+    label {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    .field {
+      margin-bottom: 20px;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    select,
+    textarea {
+      width: 100%;
+      font-family: var(--font-sans);
+      font-size: 14px;
+      padding: 12px 16px;
+      background: var(--bg-white);
+      border: 1.5px solid var(--border-color);
+      border-radius: var(--radius-md);
+      color: var(--text-primary);
+      outline: none;
+      transition: all 0.2s;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--color-primary);
+      box-shadow: 0 0 0 3px rgba(60, 88, 70, 0.1);
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .row3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 16px;
+    }
+
+    /* Photo Uploader Slots */
+    .photo-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 12px;
+      margin-top: 8px;
+    }
+
+    .photo-slot {
+      aspect-ratio: 1;
+      border: 2px dashed var(--border-color);
+      border-radius: var(--radius-md);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      gap: 6px;
+      background: var(--bg-secondary);
+      transition: all 0.2s;
+    }
+
+    .photo-slot:hover {
+      border-color: var(--color-primary);
+      background: var(--color-primary-light);
+      color: var(--color-primary);
+    }
+
+    .photo-slot i {
+      font-size: 24px;
+    }
+
+    /* Custom Tag / Chips */
+    .want-tags-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .want-tag {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 500;
+      padding: 6px 16px;
+      background: var(--bg-white);
+      border: 1.5px solid var(--border-color);
+      border-radius: 30px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      user-select: none;
+    }
+
+    .want-tag:hover {
+      border-color: var(--color-primary);
+      color: var(--color-primary);
+    }
+
+    .want-tag.selected {
+      background: var(--color-primary);
+      border-color: var(--color-primary);
+      color: var(--bg-white);
+    }
+
+    /* Form Submit Button */
+    .submit-btn {
+      width: 100%;
+      padding: 14px;
+      background: var(--color-primary);
+      color: var(--bg-white);
+      border: none;
+      border-radius: var(--radius-md);
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 16px;
+      box-shadow: 0 4px 12px rgba(60, 88, 70, 0.15);
+    }
+
+    .submit-btn:hover {
+      background: var(--color-primary-hover);
+      transform: translateY(-1px);
+    }
+
+    .validation-note {
+      font-size: 12px;
+      color: var(--color-accent);
+      display: none;
+      margin-top: 6px;
+      font-weight: 500;
+      animation: fadeIn 0.2s ease;
+    }
+
+    /* Form Container constraints */
+    #panel-list {
+      max-width: 680px;
+      margin: 0 auto;
+      background: var(--bg-white);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      border: 1px solid var(--border-light);
+      box-shadow: var(--shadow-md);
+    }
+
+    /* ===== BROWSE PANEL LAYOUT ===== */
+    .browse-layout {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      gap: 32px;
+      align-items: start;
+    }
+
+    .filter-panel {
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      background: var(--bg-white);
+      box-shadow: var(--shadow-sm);
+      position: sticky;
+      top: 100px;
+    }
+
+    .filter-section {
+      margin-bottom: 24px;
+    }
+
+    .filter-section:last-child {
+      margin-bottom: 0;
+    }
+
+    .filter-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-secondary);
+      margin-bottom: 12px;
+      border-bottom: 1px solid var(--border-light);
+      padding-bottom: 4px;
+    }
+
+    .check-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .check-item input[type=checkbox] {
+      width: 16px;
+      height: 16px;
+      accent-color: var(--color-primary);
+      cursor: pointer;
+    }
+
+    /* Custom range slider */
+    input[type="range"] {
+      width: 100%;
+      height: 6px;
+      background: var(--bg-secondary);
+      border-radius: 3px;
+      outline: none;
+      margin-top: 8px;
+      accent-color: var(--color-primary);
+    }
+
+    /* Search & Sort Panel */
+    .search-sort-bar {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 20px;
+      align-items: center;
+    }
+
+    .search-sort-bar input {
+      flex: 1;
+      padding-left: 42px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' class='icon icon-tabler icon-tabler-search' width='20' height='20' viewBox='0 0 24 24' stroke-width='1.75' stroke='%2365625b' fill='none' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath stroke='none' d='M0 0h24v24H0z' fill='none'/%3E%3Ccircle cx='10' cy='10' r='7' /%3E%3Cline x1='21' y1='21' x2='15' y2='15' /%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: 14px center;
+    }
+
+    .search-sort-bar select {
+      width: 160px;
+    }
+
+    /* Item Card Grid */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 20px;
+    }
+
+    .item-card {
+      background: var(--bg-white);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .item-card:hover {
+      border-color: var(--color-primary);
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .card-img {
+      aspect-ratio: 3/4;
+      background: var(--bg-secondary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+      color: var(--text-tertiary);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card-img i {
+      transition: transform 0.3s;
+    }
+
+    .item-card:hover .card-img i {
+      transform: scale(1.1);
+    }
+
+    .card-img .badge {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 4px 10px;
+      border-radius: 20px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .badge-new { background: #e8f5e9; color: #2e7d32; }
+    .badge-good { background: #e3f2fd; color: #1565c0; }
+    .badge-fair { background: #fff3e0; color: #ef6c00; }
+
+    .card-info {
+      padding: 14px;
+    }
+
+    .card-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-primary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 4px;
+    }
+
+    .card-meta {
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+    }
+
+    .card-value {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--color-accent);
+    }
+
+    /* Pagination */
+    .pagination {
+      display: flex;
+      gap: 6px;
+      justify-content: center;
+      margin-top: 32px;
+    }
+
+    .pg-btn {
+      width: 36px;
+      height: 36px;
+      border: 1px solid var(--border-color);
+      border-radius: 50%;
+      cursor: pointer;
+      background: var(--bg-white);
+      color: var(--text-secondary);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+
+    .pg-btn:hover {
+      border-color: var(--color-primary);
+      color: var(--color-primary);
+    }
+
+    .pg-btn.active {
+      background: var(--color-primary);
+      color: var(--bg-white);
+      border-color: var(--color-primary);
+    }
+
+    /* ===== DETAIL VIEW PANEL ===== */
+    #panel-detail {
+      max-width: 960px;
+      margin: 0 auto;
+      background: var(--bg-white);
+      border-radius: var(--radius-lg);
+      padding: 40px;
+      border: 1px solid var(--border-light);
+      box-shadow: var(--shadow-md);
+    }
+
+    .detail-layout {
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 40px;
+    }
+
+    /* Improved Slideshow Carousel */
+    .carousel-container {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .carousel {
+      background: var(--bg-secondary);
+      border-radius: var(--radius-md);
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--border-light);
+    }
+
+    .carousel-main {
+      font-size: 80px;
+      color: var(--text-tertiary);
+      transition: transform 0.3s;
+    }
+
+    .carousel-dots {
+      position: absolute;
+      bottom: 14px;
+      display: flex;
+      gap: 6px;
+    }
+
+    .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: rgba(30, 29, 27, 0.2);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .dot.active {
+      background: var(--color-primary);
+      transform: scale(1.3);
+    }
+
+    .carousel-thumbs {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+
+    .thumb {
+      aspect-ratio: 1;
+      background: var(--bg-secondary);
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      color: var(--text-tertiary);
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: all 0.2s;
+    }
+
+    .thumb:hover {
+      border-color: var(--border-color);
+    }
+
+    .thumb.active {
+      border-color: var(--color-primary);
+      background: var(--bg-white);
+    }
+
+    /* Detail content */
+    .detail-title {
+      font-family: var(--font-serif);
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--color-primary);
+      margin-bottom: 6px;
+    }
+
+    .detail-value {
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--color-accent);
+      margin-bottom: 20px;
+    }
+
+    .spec-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .spec-item {
+      background: var(--bg-secondary);
+      border-radius: var(--radius-sm);
+      padding: 10px 14px;
+      border: 1px solid var(--border-light);
+    }
+
+    .spec-key {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-secondary);
+      margin-bottom: 2px;
+    }
+
+    .spec-val {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .desc-text {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+
+    /* Lister Card */
+    .lister-card {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--bg-primary);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-md);
+      padding: 14px 16px;
+      margin-bottom: 24px;
+    }
+
+    .avatar {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: var(--color-accent-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--color-accent);
+      border: 1px solid var(--border-color);
+      flex-shrink: 0;
+    }
+
+    .lister-info .lister-name {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .lister-info .lister-meta {
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-top: 2px;
+    }
+
+    .stars {
+      color: #EF9F27;
+      font-size: 13px;
+    }
+
+    /* Actions */
+    .action-row {
+      display: flex;
+      gap: 12px;
+    }
+
+    .cta-btn {
+      flex: 1;
+      padding: 12px 24px;
+      background: var(--color-primary);
+      color: var(--bg-white);
+      border: none;
+      border-radius: var(--radius-md);
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s;
+      box-shadow: 0 4px 12px rgba(60, 88, 70, 0.15);
+    }
+
+    .cta-btn:hover {
+      background: var(--color-primary-hover);
+      transform: translateY(-1px);
+    }
+
+    .wish-btn {
+      padding: 12px 16px;
+      border: 1.5px solid var(--border-color);
+      border-radius: var(--radius-md);
+      background: var(--bg-white);
+      cursor: pointer;
+      color: var(--text-secondary);
+      font-size: 18px;
+      transition: all 0.25s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .wish-btn:hover {
+      border-color: var(--color-accent);
+      color: var(--color-accent);
+    }
+
+    .wish-btn.wished {
+      background: var(--color-accent-light);
+      color: var(--color-accent);
+      border-color: var(--color-accent);
+    }
+
+    #wish-msg {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--color-accent);
+      margin-top: 8px;
+      animation: fadeIn 0.2s ease;
+    }
+
+    /* Screen Reader helper */
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- App Header -->
+  <header>
+    <a href="/" class="brand">
+      <span class="brand-logo">Swap<span>Closet</span></span>
+    </a>
+    <div class="header-user">
+      <span>Demo Account</span>
+      <div class="user-avatar">DA</div>
+    </div>
+  </header>
+
+  <main>
+    <h2 class="sr-only">Clothing Exchange & Swap Marketplace — listings feature prototype with three views: list an item, browse items, and item detail.</h2>
+
+    <!-- Navigation Tabs -->
+    <div class="tabs-wrapper">
+      <button class="tab active" onclick="showTab('list', event)"><i class="ti ti-plus" aria-hidden="true"></i> List an item</button>
+      <button class="tab" onclick="showTab('browse', event)"><i class="ti ti-layout-grid" aria-hidden="true"></i> Browse</button>
+      <button class="tab" onclick="showTab('detail', event)"><i class="ti ti-shirt" aria-hidden="true"></i> Item detail</button>
+    </div>
+
+    <!-- 1. LIST AN ITEM PANEL -->
+    <div id="panel-list" class="panel active">
+      <h3 class="section-title">Share Your Style</h3>
+      <div class="section-label">Item details</div>
+      
+      <div class="field">
+        <label for="f-title">Title <span style="color:var(--color-accent)">*</span></label>
+        <input type="text" id="f-title" placeholder="e.g. Floral summer dress, size M" oninput="validateField('f-title','v-title')">
+        <div class="validation-note" id="v-title">Title is required</div>
+      </div>
+      
+      <div class="field">
+        <label for="f-desc">Description</label>
+        <textarea id="f-desc" rows="3" placeholder="Describe the item — fabric, fit, any flaws…"></textarea>
+      </div>
+      
+      <div class="row3">
+        <div class="field">
+          <label for="f-cat">Category <span style="color:var(--color-accent)">*</span></label>
+          <select id="f-cat" onchange="validateField('f-cat','v-cat')">
+            <option value="">Select</option>
+            <option>Tops</option>
+            <option>Bottoms</option>
+            <option>Dresses</option>
+            <option>Shoes</option>
+            <option>Accessories</option>
+          </select>
+          <div class="validation-note" id="v-cat">Category required</div>
+        </div>
+        
+        <div class="field">
+          <label for="f-gender">Gender</label>
+          <select id="f-gender">
+            <option value="">Select</option>
+            <option>Women</option>
+            <option>Men</option>
+            <option>Unisex</option>
+            <option>Kids</option>
+          </select>
+        </div>
+        
+        <div class="field">
+          <label for="f-size">Size</label>
+          <select id="f-size">
+            <option value="">Select</option>
+            <option>XS</option>
+            <option>S</option>
+            <option>M</option>
+            <option>L</option>
+            <option>XL</option>
+            <option>XXL</option>
+            <option>One size</option>
+          </select>
+        </div>
+      </div>
+      
+      <div class="row">
+        <div class="field">
+          <label for="f-cond">Condition <span style="color:var(--color-accent)">*</span></label>
+          <select id="f-cond" onchange="validateField('f-cond','v-cond')">
+            <option value="">Select</option>
+            <option>New with tags</option>
+            <option>Like new</option>
+            <option>Good</option>
+            <option>Fair</option>
+          </select>
+          <div class="validation-note" id="v-cond">Condition required</div>
+        </div>
+        
+        <div class="field">
+          <label for="f-val">Estimated value (₹)</label>
+          <input type="number" id="f-val" placeholder="e.g. 1200">
+        </div>
+      </div>
+      
+      <div class="field">
+        <label>Photos (up to 5)</label>
+        <div class="photo-grid">
+          <div class="photo-slot"><i class="ti ti-camera" aria-hidden="true"></i>Add photo</div>
+          <div class="photo-slot"><i class="ti ti-plus" aria-hidden="true"></i></div>
+          <div class="photo-slot"><i class="ti ti-plus" aria-hidden="true"></i></div>
+          <div class="photo-slot"><i class="ti ti-plus" aria-hidden="true"></i></div>
+          <div class="photo-slot"><i class="ti ti-plus" aria-hidden="true"></i></div>
+        </div>
+      </div>
+      
+      <div class="field">
+        <label>Preferred swap category</label>
+        <div class="want-tags-group" id="swap-cats">
+          <span class="want-tag" onclick="toggleTag(this)">Tops</span>
+          <span class="want-tag" onclick="toggleTag(this)">Bottoms</span>
+          <span class="want-tag" onclick="toggleTag(this)">Dresses</span>
+          <span class="want-tag" onclick="toggleTag(this)">Shoes</span>
+          <span class="want-tag" onclick="toggleTag(this)">Accessories</span>
+          <span class="want-tag" onclick="toggleTag(this)">Any</span>
+        </div>
+      </div>
+      
+      <button class="submit-btn" onclick="submitListing()"><i class="ti ti-send" aria-hidden="true"></i> Post listing</button>
+      
+      <div id="submit-msg" style="display:none;margin-top:20px;font-size:13px;color:#2e7d32;text-align:center;padding:12px;background:#e8f5e9;border:1px solid #c8e6c9;border-radius:var(--radius-md); font-weight: 500;">
+        <i class="ti ti-circle-check" aria-hidden="true"></i> Listing submitted successfully!
+      </div>
+    </div>
+
+    <!-- 2. BROWSE ITEMS PANEL -->
+    <div id="panel-browse" class="panel">
+      <div class="browse-layout">
+        <!-- Sidebar Filters -->
+        <div class="filter-panel">
+          <div class="filter-section">
+            <div class="filter-label">Category</div>
+            <label class="check-item"><input type="checkbox" checked> Tops</label>
+            <label class="check-item"><input type="checkbox" checked> Bottoms</label>
+            <label class="check-item"><input type="checkbox"> Dresses</label>
+            <label class="check-item"><input type="checkbox"> Shoes</label>
+            <label class="check-item"><input type="checkbox"> Accessories</label>
+          </div>
+          
+          <div class="filter-section">
+            <div class="filter-label">Size</div>
+            <label class="check-item"><input type="checkbox"> XS</label>
+            <label class="check-item"><input type="checkbox" checked> S</label>
+            <label class="check-item"><input type="checkbox" checked> M</label>
+            <label class="check-item"><input type="checkbox"> L</label>
+            <label class="check-item"><input type="checkbox"> XL</label>
+          </div>
+          
+          <div class="filter-section">
+            <div class="filter-label">Gender</div>
+            <label class="check-item"><input type="checkbox" checked> Women</label>
+            <label class="check-item"><input type="checkbox"> Men</label>
+            <label class="check-item"><input type="checkbox"> Unisex</label>
+          </div>
+          
+          <div class="filter-section">
+            <div class="filter-label">Condition</div>
+            <label class="check-item"><input type="checkbox" checked> New</label>
+            <label class="check-item"><input type="checkbox" checked> Like new</label>
+            <label class="check-item"><input type="checkbox" checked> Good</label>
+            <label class="check-item"><input type="checkbox"> Fair</label>
+          </div>
+          
+          <div class="filter-section">
+            <div class="filter-label">Distance</div>
+            <input type="range" min="5" max="100" value="30" id="dist-slider" oninput="document.getElementById('dist-val').textContent=this.value">
+            <div style="font-size:12px;color:var(--text-secondary);margin-top:6px; font-weight: 500;">Within <span id="dist-val">30</span> km</div>
+          </div>
+        </div>
+
+        <!-- Browse main list -->
+        <div class="browse-right">
+          <div class="search-sort-bar">
+            <input type="text" placeholder="Search items…">
+            <select aria-label="Sort listings">
+              <option>Newest first</option>
+              <option>Closest first</option>
+              <option>Most viewed</option>
+            </select>
+          </div>
+          
+          <div style="font-size:13px;color:var(--text-secondary);margin-bottom:14px; font-weight: 500;">24 items found</div>
+          
+          <div class="card-grid" id="card-grid"></div>
+          
+          <div class="pagination" id="pagination"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. ITEM DETAIL PANEL -->
+    <div id="panel-detail" class="panel">
+      <div class="detail-layout">
+        <!-- Carousel & Images -->
+        <div class="carousel-container">
+          <div class="carousel">
+            <span class="carousel-main" id="main-carousel-icon"><i class="ti ti-shirt" aria-hidden="true"></i></span>
+            <div class="carousel-dots" id="carousel-dots">
+              <div class="dot active" onclick="switchCarousel(0)"></div>
+              <div class="dot" onclick="switchCarousel(1)"></div>
+              <div class="dot" onclick="switchCarousel(2)"></div>
+              <div class="dot" onclick="switchCarousel(3)"></div>
+            </div>
+          </div>
+          <div class="carousel-thumbs">
+            <div class="thumb active" onclick="switchCarousel(0)"><i class="ti ti-shirt" aria-hidden="true"></i></div>
+            <div class="thumb" onclick="switchCarousel(1)"><i class="ti ti-shirt" aria-hidden="true"></i></div>
+            <div class="thumb" onclick="switchCarousel(2)"><i class="ti ti-shirt" aria-hidden="true"></i></div>
+            <div class="thumb" onclick="switchCarousel(3)"><i class="ti ti-shirt" aria-hidden="true"></i></div>
+          </div>
+        </div>
+
+        <!-- Specifications & Actions -->
+        <div>
+          <h3 class="detail-title">Floral Midi Dress — Zara</h3>
+          <div class="detail-value">Est. value ₹1,800 · Listed 2 days ago</div>
+          
+          <div class="spec-grid">
+            <div class="spec-item">
+              <div class="spec-key">Category</div>
+              <div class="spec-val">Dresses</div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-key">Size</div>
+              <div class="spec-val">M</div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-key">Condition</div>
+              <div class="spec-val">Like new</div>
+            </div>
+            <div class="spec-item">
+              <div class="spec-key">Gender</div>
+              <div class="spec-val">Women</div>
+            </div>
+          </div>
+          
+          <p class="desc-text">Worn only twice. Vibrant floral print, flowy chiffon fabric. No tears or stains. Perfect for summer occasions or casual outings.</p>
+          
+          <div style="margin-bottom:24px">
+            <div style="font-size:11px;font-weight:700;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px">Will swap for</div>
+            <div class="want-tags-group">
+              <span class="want-tag">Tops</span>
+              <span class="want-tag">Accessories</span>
+              <span class="want-tag">Any</span>
+            </div>
+          </div>
+          
+          <div class="lister-card">
+            <div class="avatar">PR</div>
+            <div class="lister-info">
+              <div class="lister-name">Priya R.</div>
+              <div class="lister-meta">
+                <span class="stars">★★★★</span><span style="color:var(--text-tertiary)">★</span> 
+                4.2 · 11 swaps · Thiruvananthapuram
+              </div>
+            </div>
+          </div>
+          
+          <div class="action-row">
+            <button class="cta-btn" onclick="sendPrompt('I want to request a swap for the Floral Midi Dress. Help me compose a swap request.')">
+              <i class="ti ti-repeat" aria-hidden="true"></i> Request swap ↗
+            </button>
+            <button class="wish-btn" id="wish-btn" onclick="toggleWish()" title="Add to wishlist" aria-label="Add to wishlist">
+              <i class="ti ti-heart" id="wish-icon"></i>
+            </button>
+          </div>
+          
+          <div id="wish-msg" style="display:none;">
+            <i class="ti ti-heart-filled"></i> Added to wishlist
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // Mock listings data
+    const items = [
+      {title:'Linen kurta',cat:'Tops',size:'S',cond:'Like new',val:'₹900',icon:'ti-shirt',badge:'badge-new',badgeLabel:'Like new'},
+      {title:'High-waist jeans',cat:'Bottoms',size:'M',cond:'Good',val:'₹1,200',icon:'ti-shirt',badge:'badge-good',badgeLabel:'Good'},
+      {title:'Floral midi dress',cat:'Dresses',size:'M',cond:'Like new',val:'₹1,800',icon:'ti-shirt',badge:'badge-new',badgeLabel:'Like new'},
+      {title:'Slip-on sneakers',cat:'Shoes',size:'7',cond:'Good',val:'₹800',icon:'ti-shoe',badge:'badge-good',badgeLabel:'Good'},
+      {title:'Silk blouse',cat:'Tops',size:'S',cond:'New',val:'₹1,500',icon:'ti-shirt',badge:'badge-new',badgeLabel:'New'},
+      {title:'Palazzo pants',cat:'Bottoms',size:'L',cond:'Fair',val:'₹600',icon:'ti-shirt',badge:'badge-fair',badgeLabel:'Fair'},
+      {title:'Beaded necklace',cat:'Accessories',size:'OS',cond:'New',val:'₹400',icon:'ti-diamond',badge:'badge-new',badgeLabel:'New'},
+      {title:'Denim jacket',cat:'Tops',size:'M',cond:'Good',val:'₹1,400',icon:'ti-shirt',badge:'badge-good',badgeLabel:'Good'},
+    ];
+
+    // Carousel icon mapping to simulate picture changes
+    const carouselIcons = [
+      'ti-shirt',
+      'ti-tags',
+      'ti-color-swatch',
+      'ti-hanger'
+    ];
+
+    // Switch carousel active image
+    function switchCarousel(index) {
+      // Main icon update
+      const mainIcon = document.getElementById('main-carousel-icon');
+      if (mainIcon) {
+        mainIcon.innerHTML = `<i class="ti ${carouselIcons[index]}" aria-hidden="true"></i>`;
+      }
+      
+      // Update Thumbs active class
+      const thumbs = document.querySelectorAll('.carousel-thumbs .thumb');
+      thumbs.forEach((t, idx) => {
+        if (idx === index) {
+          t.classList.add('active');
+        } else {
+          t.classList.remove('active');
+        }
+      });
+
+      // Update Dots active class
+      const dots = document.querySelectorAll('.carousel-dots .dot');
+      dots.forEach((d, idx) => {
+        if (idx === index) {
+          d.classList.add('active');
+        } else {
+          d.classList.remove('active');
+        }
+      });
+    }
+
+    // Render cards for Browse view
+    function renderCards(page) {
+      const grid = document.getElementById('card-grid');
+      if (!grid) return;
+      
+      const perPage = 8;
+      const start = (page-1)*perPage;
+      const slice = items.slice(start, Math.min(start+perPage, items.length));
+      
+      grid.innerHTML = slice.map(item => `
+        <div class="item-card" onclick="sendPrompt('Tell me more about swapping for a ${item.title}')">
+          <div class="card-img">
+            <i class="ti ${item.icon}" aria-hidden="true"></i>
+            <span class="badge ${item.badge}">${item.badgeLabel}</span>
+          </div>
+          <div class="card-info">
+            <div class="card-title">${item.title}</div>
+            <div class="card-meta">${item.cat} · ${item.size}</div>
+            <div class="card-value">${item.val}</div>
+          </div>
+        </div>
+      `).join('');
+      
+      const pg = document.getElementById('pagination');
+      if (!pg) return;
+      
+      const total = Math.ceil(items.length/perPage);
+      pg.innerHTML = Array.from({length:total},(_,i)=>`
+        <button class="pg-btn${i+1===page?' active':''}" onclick="renderCards(${i+1})">${i+1}</button>
+      `).join('')
+      + `<button class="pg-btn" style="gap:4px" aria-label="Next Page"><i class="ti ti-chevron-right" style="font-size:12px" aria-hidden="true"></i></button>`;
+    }
+    
+    // Initialize Cards
+    renderCards(1);
+
+    // Tab switching controller
+    function showTab(name, event) {
+      document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      
+      const panel = document.getElementById('panel-' + name);
+      if (panel) panel.classList.add('active');
+      
+      let targetTab = null;
+      if (event) {
+        targetTab = event.currentTarget;
+      } else {
+        // Fallback search
+        const tabs = document.querySelectorAll('.tab');
+        if (name === 'list') targetTab = tabs[0];
+        else if (name === 'browse') targetTab = tabs[1];
+        else if (name === 'detail') targetTab = tabs[2];
+      }
+      if (targetTab) targetTab.classList.add('active');
+    }
+
+    // Input Validation
+    function validateField(fieldId, noteId) {
+      const field = document.getElementById(fieldId);
+      const note = document.getElementById(noteId);
+      if (!field || !note) return true;
+      
+      const empty = !field.value.trim();
+      note.style.display = empty ? 'block' : 'none';
+      return !empty;
+    }
+
+    // Submit Listing handler
+    function submitListing() {
+      let valid = true;
+      valid = validateField('f-title','v-title') && valid;
+      valid = validateField('f-cat','v-cat') && valid;
+      valid = validateField('f-cond','v-cond') && valid;
+      
+      if (valid) {
+        const msg = document.getElementById('submit-msg');
+        if (msg) {
+          msg.style.display = 'block';
+          setTimeout(() => { msg.style.display = 'none'; }, 3000);
+        }
+      }
+    }
+
+    // Toggle Tag preference selected state
+    function toggleTag(el) {
+      el.classList.toggle('selected');
+    }
+
+    // Wishlist toggle
+    function toggleWish() {
+      const btn = document.getElementById('wish-btn');
+      const icon = document.getElementById('wish-icon');
+      const msg = document.getElementById('wish-msg');
+      if (!btn || !icon || !msg) return;
+      
+      const wished = btn.classList.toggle('wished');
+      icon.className = wished ? 'ti ti-heart-filled' : 'ti ti-heart';
+      msg.style.display = wished ? 'flex' : 'none';
+    }
+
+    // Integration helper (placeholder if sendPrompt doesn't exist globally)
+    if (typeof window.sendPrompt === 'undefined') {
+      window.sendPrompt = function(msg) {
+        console.log("sendPrompt called: " + msg);
+        alert("Prompt action: " + msg);
+      };
+    }
+  </script>
+</body>
+</html>

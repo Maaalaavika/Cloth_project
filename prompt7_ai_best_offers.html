@@ -1,0 +1,318 @@
+
+<style>
+  .root { font-family: var(--font-mono); padding: 1.5rem 0; }
+  .badge { display: inline-block; font-size: 11px; font-weight: 500; padding: 3px 10px; border-radius: 20px; margin-right: 6px; }
+  .b-teal { background: #E1F5EE; color: #0F6E56; }
+  .b-purple { background: #EEEDFE; color: #3C3489; }
+  .b-amber { background: #FAEEDA; color: #854F0B; }
+  .b-blue { background: #E6F1FB; color: #185FA5; }
+  .b-coral { background: #FAECE7; color: #993C1D; }
+  .b-green { background: #EAF3DE; color: #3B6D11; }
+  .section { border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 1.25rem 1.5rem; margin-bottom: 1rem; background: var(--color-background-primary); }
+  .section-header { display: flex; align-items: center; gap: 10px; margin-bottom: 1rem; flex-wrap: wrap; }
+  .section-icon { font-size: 18px; color: var(--color-text-secondary); }
+  .section-title { font-size: 13px; font-weight: 500; color: var(--color-text-primary); text-transform: uppercase; letter-spacing: 0.06em; }
+  .prompt-box { background: var(--color-background-tertiary); border-radius: var(--border-radius-md); padding: 1rem 1.25rem; font-size: 13px; line-height: 1.82; color: var(--color-text-primary); white-space: pre-wrap; word-break: break-word; border: 0.5px solid var(--color-border-tertiary); max-height: 500px; overflow-y: auto; }
+  .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(155px, 1fr)); gap: 10px; margin-bottom: 1rem; }
+  .feature-card { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 0.85rem 1rem; border: 0.5px solid var(--color-border-tertiary); }
+  .fc-label { font-size: 11px; color: var(--color-text-secondary); margin-bottom: 4px; }
+  .fc-value { font-size: 13px; font-weight: 500; color: var(--color-text-primary); }
+  .checklist { list-style: none; padding: 0; margin: 0; }
+  .checklist li { display: flex; align-items: flex-start; gap: 8px; font-size: 13px; color: var(--color-text-primary); padding: 5px 0; border-bottom: 0.5px solid var(--color-border-tertiary); line-height: 1.55; }
+  .checklist li:last-child { border-bottom: none; }
+  .ci { color: #1D9E75; font-size: 15px; margin-top: 1px; flex-shrink: 0; }
+  .copy-btn { display: flex; align-items: center; gap: 6px; font-size: 12px; padding: 6px 14px; border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-secondary); background: transparent; color: var(--color-text-secondary); cursor: pointer; margin-top: 0.75rem; transition: background 0.15s; }
+  .copy-btn:hover { background: var(--color-background-secondary); color: var(--color-text-primary); }
+  .divider { border: none; border-top: 0.5px solid var(--color-border-tertiary); margin: 1.25rem 0; }
+  .tag-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 0.5rem; }
+  .stack-tag { font-size: 11px; background: var(--color-background-secondary); color: var(--color-text-secondary); border: 0.5px solid var(--color-border-tertiary); border-radius: 20px; padding: 3px 10px; }
+  .flow-row { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin: 0.75rem 0; }
+  .flow-box { font-size: 12px; background: var(--color-background-secondary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-md); padding: 5px 12px; color: var(--color-text-primary); white-space: nowrap; }
+  .flow-arrow { color: var(--color-text-secondary); font-size: 14px; }
+  .json-box { background: var(--color-background-tertiary); border-radius: var(--border-radius-md); padding: 0.85rem 1.1rem; font-size: 12px; line-height: 1.7; color: var(--color-text-primary); white-space: pre; overflow-x: auto; border: 0.5px solid var(--color-border-tertiary); margin-top: 0.5rem; }
+  .sub-label { font-size: 11px; color: var(--color-text-secondary); margin-bottom: 6px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; }
+</style>
+
+<div class="root">
+  <h2 class="sr-only">Prompt 7: AI-powered Best Offers From Your Wardrobe feature</h2>
+
+  <div class="section">
+    <div class="section-header">
+      <i class="ti ti-sparkles section-icon" aria-hidden="true"></i>
+      <span class="section-title">Prompt 7 — AI Best Offers Feature</span>
+      <span class="badge b-purple">Claude API</span>
+      <span class="badge b-teal">Structured JSON</span>
+      <span class="badge b-blue">React Component</span>
+      <span class="badge b-amber">Express Route</span>
+    </div>
+
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="fc-label">AI Model</div>
+        <div class="fc-value">claude-sonnet-4-20250514</div>
+      </div>
+      <div class="feature-card">
+        <div class="fc-label">Trigger</div>
+        <div class="fc-value">Item detail page load</div>
+      </div>
+      <div class="feature-card">
+        <div class="fc-label">Output</div>
+        <div class="fc-value">Top 3 swap suggestions</div>
+      </div>
+      <div class="feature-card">
+        <div class="fc-label">Context sent</div>
+        <div class="fc-value">Viewed item + user listings</div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <div class="sub-label" style="margin-bottom: 8px;">Request → Response flow</div>
+    <div class="flow-row">
+      <div class="flow-box"><i class="ti ti-eye" aria-hidden="true"></i> User views item</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-box">Frontend calls POST /api/ai/best-offers</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-box">Express fetches user listings</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-box">Builds Claude prompt</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-box">Claude returns JSON</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-box">Highlight card renders</div>
+    </div>
+
+    <hr class="divider">
+
+    <div class="sub-label" style="margin-bottom: 4px;">Expected JSON response shape</div>
+    <div class="json-box">{
+  "suggestions": [
+    {
+      "itemId": "abc123",
+      "title": "Linen Blazer — Beige",
+      "image": "https://...",
+      "reason": "Similar estimated value and both in excellent condition — strong even trade."
+    },
+    {
+      "itemId": "def456",
+      "title": "Floral Midi Skirt",
+      "image": "https://...",
+      "reason": "Same category and size; style aesthetic closely matches the listed item."
+    },
+    {
+      "itemId": "ghi789",
+      "title": "White Linen Shirt",
+      "image": "https://...",
+      "reason": "Slight value surplus gives you negotiation leverage on this swap."
+    }
+  ]
+}</div>
+
+    <hr class="divider">
+
+    <div class="section-header" style="margin-bottom: 0.5rem;">
+      <i class="ti ti-clipboard-text section-icon" aria-hidden="true"></i>
+      <span class="section-title">Full Prompt Text</span>
+    </div>
+
+    <div class="prompt-box" id="promptText">You are building Prompt 7 of a Clothing Exchange & Swap Marketplace (MERN + React + Tailwind). The project already has auth, item listings, swap requests, real-time chat, notifications, a user dashboard, and a homepage (Prompts 1–6).
+
+─── FEATURE: AI BEST OFFERS FROM YOUR WARDROBE ──────────────────
+
+Goal: When a logged-in user views an item detail page (/items/:id), show them a highlighted card section — "Best Offers From Your Wardrobe" — powered by Claude AI. Claude receives the viewed item's details and the user's own active listings, then returns the top 3 items from their wardrobe that would make the strongest swap offer, each with a one-line reason.
+
+─── BACKEND: Express route ──────────────────────────────────────
+
+File: routes/aiRoutes.js + controllers/aiController.js
+
+Endpoint: POST /api/ai/best-offers
+Auth: protected (verifyToken middleware)
+Request body: { viewedItemId: String }
+
+Controller logic (aiController.js → getBestOffers):
+
+Step 1 — Fetch data
+  - Find the viewed item by viewedItemId (populate: title, category, size, condition, estimatedValue, images[0])
+  - If not found → 404 "Item not found"
+  - Find the current user's active listings: Item.find({ owner: req.user.id, status: "active" })
+    Populate same fields. If user has 0 active listings → return 200 with empty suggestions array and message: "List some items to get AI suggestions"
+
+Step 2 — Build Claude prompt
+  Construct this system prompt:
+    "You are a smart clothing swap assistant. Your job is to look at someone's wardrobe and identify which of their items would make the best swap offer for a specific item they want. Consider: estimated value match, size compatibility, category relevance, condition, and overall swap appeal. Always respond with valid JSON only — no markdown, no explanation outside the JSON."
+
+  Construct this user message:
+    "I want to swap for this item:
+    - Title: {viewedItem.title}
+    - Category: {viewedItem.category}
+    - Size: {viewedItem.size}
+    - Condition: {viewedItem.condition}
+    - Estimated value: £{viewedItem.estimatedValue}
+
+    Here are my active listings I could offer in exchange:
+    {userListings.map((item, i) => `
+    ${i + 1}. ID: ${item._id}
+       Title: ${item.title}
+       Category: ${item.category}
+       Size: ${item.size}
+       Condition: ${item.condition}
+       Estimated value: £${item.estimatedValue}`).join('\n')}
+
+    Return a JSON object with this exact shape:
+    {
+      "suggestions": [
+        {
+          "itemId": "<_id of the item>",
+          "title": "<item title>",
+          "reason": "<one sentence explaining why this is a strong swap offer>"
+        }
+      ]
+    }
+    Return the top 3 items only. If fewer than 3 items exist, return all of them. Respond with raw JSON only."
+
+Step 3 — Call Claude API
+  Use fetch to call https://api.anthropic.com/v1/messages with:
+    model: "claude-sonnet-4-20250514"
+    max_tokens: 1000
+    system: <system prompt above>
+    messages: [{ role: "user", content: <user message above> }]
+  Headers: "x-api-key": process.env.ANTHROPIC_API_KEY, "anthropic-version": "2023-06-01"
+
+Step 4 — Parse and enrich response
+  - Extract text from response.content[0].text
+  - Strip any accidental markdown fences (```json ... ```) before parsing
+  - JSON.parse the cleaned string
+  - For each suggestion, find the matching item from userListings by itemId and attach its images[0] as "image" field
+  - Return: res.json({ suggestions: enrichedSuggestions })
+
+Step 5 — Error handling
+  - Wrap entire controller in try/catch
+  - If Claude returns unparseable JSON → return 500 with { error: "AI response parsing failed", raw: <raw text> }
+  - If Anthropic API call fails → return 502 with { error: "AI service unavailable" }
+  - Log errors with console.error for debugging
+
+Add to server.js:
+  import aiRoutes from './routes/aiRoutes.js'
+  app.use('/api/ai', aiRoutes)
+
+─── FRONTEND: React component ───────────────────────────────────
+
+File: components/BestOffersCard.jsx
+
+Props: { viewedItemId: String }
+
+Behavior:
+  - On mount: POST /api/ai/best-offers with { viewedItemId } using axios (with JWT via existing api.js interceptor)
+  - Loading state: show a pulsing skeleton card with a "✨ Analysing your wardrobe..." label
+  - Empty state: if suggestions.length === 0, render nothing (return null) — don't show the section
+  - Error state: silently fail (return null) — don't break the item detail page for AI errors
+
+UI design (Tailwind):
+  Outer wrapper:
+    - Distinct highlight card: bg-emerald-50 border border-emerald-200 rounded-2xl p-5 mt-6
+    - Header row: sparkle icon (✨ or ti-sparkles) + bold title "Best Offers From Your Wardrobe" + small badge "AI Powered" (green pill)
+    - Subtitle: "Claude AI matched these from your active listings"
+
+  Each suggestion card (3 cards in a row on desktop, stacked on mobile):
+    - White bg, rounded-xl, border border-gray-100, shadow-sm, p-3
+    - Item image: w-full aspect-square object-cover rounded-lg mb-2 (fallback: gray placeholder div)
+    - Item title: text-sm font-medium text-gray-800 truncate
+    - Reason text: text-xs text-gray-500 italic mt-1 line-clamp-2
+    - "Offer This" button: full width, mt-2, bg-emerald-600 hover:bg-emerald-700 text-white text-xs py-1.5 rounded-lg
+      → onClick: navigate to /items/{viewedItemId}?offer={suggestion.itemId}
+        (pre-selects this item when opening the swap request modal on the item detail page)
+
+  Loading skeleton (shown while fetching):
+    - Same outer wrapper with reduced opacity
+    - Three skeleton cards: animate-pulse gray rectangles for image + two lines of text
+    - "✨ Analysing your wardrobe..." in small muted text at top
+
+Integration into ItemDetail page:
+  In pages/ItemDetail.jsx (or equivalent), import BestOffersCard and render it:
+    - Only render if the viewer is logged in (use useAuth hook) AND is not the item owner
+    - Place it below the item description and above the swap request button section:
+      {isLoggedIn && !isOwner && <BestOffersCard viewedItemId={item._id} />}
+
+─── ENV + DEPENDENCIES ──────────────────────────────────────────
+
+Add to backend .env:
+  ANTHROPIC_API_KEY=your_key_here
+
+No new npm packages needed — use native fetch (Node 18+) for the Anthropic API call.
+If the project uses Node < 18, use the existing axios instance instead and note the syntax change.
+
+─── DELIVERABLES ─────────────────────────────────────────────────
+
+Provide complete code for:
+  Backend:
+    controllers/aiController.js      (full getBestOffers function)
+    routes/aiRoutes.js               (POST /best-offers with verifyToken)
+    Addition to server.js            (mount aiRoutes)
+
+  Frontend:
+    components/BestOffersCard.jsx    (full component with loading, error, empty states)
+    Snippet for pages/ItemDetail.jsx (where and how to render BestOffersCard)
+
+Constraints:
+  - Never expose ANTHROPIC_API_KEY to the frontend — all Claude calls go through the backend
+  - The frontend component must never crash the item detail page on AI failure
+  - Parse Claude's JSON safely — always strip markdown fences before JSON.parse
+  - Reuse existing verifyToken middleware and api.js axios interceptor
+  - Tailwind CSS only — no inline style objects in the React component
+  - The "Offer This" button must pass the selected item ID through the URL so the swap modal can pre-fill it</div>
+
+    <button class="copy-btn" onclick="copyPrompt()">
+      <i class="ti ti-copy" aria-hidden="true"></i>
+      Copy full prompt
+    </button>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <i class="ti ti-checklist section-icon" aria-hidden="true"></i>
+      <span class="section-title">What this prompt covers</span>
+    </div>
+    <ul class="checklist">
+      <li><i class="ti ti-circle-check ci" aria-hidden="true"></i><span>Secure backend route — API key never touches the frontend</span></li>
+      <li><i class="ti ti-circle-check ci" aria-hidden="true"></i><span>Dynamic Claude prompt built from real DB data (viewed item + user listings)</span></li>
+      <li><i class="ti ti-circle-check ci" aria-hidden="true"></i><span>Structured JSON output contract enforced via prompt instructions</span></li>
+      <li><i class="ti ti-circle-check ci" aria-hidden="true"></i><span>Safe JSON parsing — strips markdown fences before parse</span></li>
+      <li><i class="ti ti-circle-check ci" aria-hidden="true"></i><span>Response enrichment — attaches image URLs from DB after Claude responds</span></li>
+      <li><i class="ti ti-circle-check ci" aria-hidden="true"></i><span>Granular error handling — 404, 502, parse failure all handled separately</span></li>
+      <li><i class="ti ti-circle-check ci" aria-hidden="true"></i><span>BestOffersCard silently fails — never breaks the item detail page</span></li>
+      <li><i class="ti ti-circle-check ci" aria-hidden="true"></i><span>Pulse skeleton loader with "Analysing your wardrobe..." state</span></li>
+      <li><i class="ti ti-circle-check ci" aria-hidden="true"></i><span>"Offer This" button passes item ID via URL to pre-fill swap modal</span></li>
+      <li><i class="ti ti-circle-check ci" aria-hidden="true"></i><span>Only shown to logged-in non-owners (useAuth + isOwner guard)</span></li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <i class="ti ti-layers-intersect section-icon" aria-hidden="true"></i>
+      <span class="section-title">Files to be generated</span>
+    </div>
+    <div class="sub-label" style="margin-bottom: 6px;">Backend</div>
+    <div class="tag-row" style="margin-bottom: 1rem;">
+      <span class="stack-tag">controllers/aiController.js</span>
+      <span class="stack-tag">routes/aiRoutes.js</span>
+      <span class="stack-tag">server.js (addition)</span>
+      <span class="stack-tag">.env (ANTHROPIC_API_KEY)</span>
+    </div>
+    <div class="sub-label" style="margin-bottom: 6px;">Frontend</div>
+    <div class="tag-row">
+      <span class="stack-tag">components/BestOffersCard.jsx</span>
+      <span class="stack-tag">pages/ItemDetail.jsx (snippet)</span>
+    </div>
+  </div>
+</div>
+
+<script>
+function copyPrompt() {
+  const text = document.getElementById('promptText').innerText;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.querySelector('.copy-btn');
+    btn.innerHTML = '<i class="ti ti-check" aria-hidden="true"></i> Copied!';
+    setTimeout(() => { btn.innerHTML = '<i class="ti ti-copy" aria-hidden="true"></i> Copy full prompt'; }, 2200);
+  });
+}
+</script>

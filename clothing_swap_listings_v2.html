@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>SwapCloset - India's #1 Clothing Swap Marketplace</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --sage:#4a7c59;--sage-light:#e8f0eb;--sage-dark:#2d5438;
+    --cream:#faf7f2;--warm:#f0ebe0;--rust:#c4622d;--rust-light:#fdf0e8;
+    --text:#1a1a1a;--muted:#6b6b6b;--border:#e2ddd5;--green:#10b981;
+    --white:#ffffff;--radius:12px;--radius-lg:18px;--blue:#3b82f6;
+  }
+  body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);min-height:100vh;scroll-behavior:smooth}
+  
+  /* NAV */
+  nav{background:var(--white);border-bottom:1px solid var(--border);padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:60px;position:sticky;top:0;z-index:100;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+  .logo{font-family:'Playfair Display',serif;font-size:24px;color:var(--sage-dark);letter-spacing:-0.5px;font-weight:700}
+  .logo span{color:var(--rust)}
+  .nav-center{display:flex;gap:20px;flex:1;justify-content:center}
+  .nav-tab{padding:8px 16px;border-radius:20px;border:none;background:transparent;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;color:var(--muted);transition:all .2s;min-height:40px;min-width:60px;-webkit-tap-highlight-color:transparent;-webkit-appearance:none}
+  .nav-tab.active{background:var(--sage);color:white}
+  .nav-tab:hover:not(.active){color:var(--sage-dark)}
+  .nav-tab:active{transform:scale(0.95)}
+  
+  /* HERO SECTION */
+  .hero{background:linear-gradient(135deg, var(--sage) 0%, var(--sage-dark) 100%);color:white;padding:60px 24px;text-align:center}
+  .hero h1{font-family:'Playfair Display',serif;font-size:48px;margin-bottom:12px;font-weight:700}
+  .hero p{font-size:18px;margin-bottom:32px;opacity:.95}
+  .hero-search{max-width:600px;margin:0 auto 32px;display:flex;gap:8px}
+  .hero-search input{flex:1;padding:14px 18px;border:none;border-radius:8px;font-size:15px;outline:none;-webkit-appearance:none}
+  .hero-search button{padding:14px 24px;background:var(--rust);color:white;border:none;border-radius:8px;cursor:pointer;font-weight:600;transition:all .2s;min-height:44px;-webkit-appearance:none}
+  .hero-search button:hover{background:#b8521f}
+  .hero-search button:active{transform:scale(0.98)}
+  .hero-shortcuts{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;max-width:700px;margin:0 auto}
+  .hero-shortcut{padding:8px 16px;background:rgba(255,255,255,.2);color:white;border-radius:20px;cursor:pointer;font-size:13px;transition:all .2s;-webkit-tap-highlight-color:transparent;border:none}
+  .hero-shortcut:hover{background:rgba(255,255,255,.35)}
+  .hero-shortcut:active{transform:scale(0.96)}
+  
+  /* STATS SECTION */
+  .stats-section{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;padding:40px 24px;max-width:1200px;margin:0 auto;background:white;margin:-30px 24px 40px}
+  .stat-card{text-align:center;padding:20px}
+  .stat-number{font-family:'Playfair Display',serif;font-size:32px;font-weight:700;color:var(--sage);margin-bottom:4px}
+  .stat-label{font-size:13px;color:var(--muted);text-transform:uppercase;letter-spacing:1px}
+  
+  /* PAGES */
+  .page{display:none;animation:fadeIn .3s ease}
+  .page.active{display:block}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+  
+  /* SECTION HEADER */
+  .section-header{padding:0 24px;margin-bottom:24px}
+  .section-title{font-family:'Playfair Display',serif;font-size:28px;color:var(--sage-dark);margin-bottom:8px;font-weight:700}
+  .section-subtitle{font-size:14px;color:var(--muted)}
+  .section-container{max-width:1200px;margin:0 auto}
+  
+  /* FEATURED DEALS */
+  .featured-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;padding:0 24px;margin-bottom:48px}
+  
+  /* ITEM CARD */
+  .item-card{background:white;border-radius:var(--radius-lg);border:1px solid var(--border);overflow:hidden;cursor:pointer;transition:all .25s;position:relative;box-shadow:0 1px 3px rgba(0,0,0,.05);-webkit-tap-highlight-color:transparent}
+  .item-card:hover{transform:translateY(-4px);box-shadow:0 8px 24px rgba(0,0,0,.12);border-color:var(--sage)}
+  .item-card:active{transform:translateY(-2px)}
+  .card-badges{position:absolute;top:10px;left:10px;display:flex;gap:6px;flex-wrap:wrap;z-index:2}
+  .badge{padding:4px 10px;border-radius:16px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+  .badge-budget{background:#d4edda;color:#155724}
+  .badge-student{background:#cce5ff;color:#004085}
+  .badge-deal{background:#ffeaa7;color:#d63031}
+  .badge-trending{background:#ff7675;color:white}
+  .card-img{width:100%;aspect-ratio:1;overflow:hidden;background:var(--warm);display:flex;align-items:center;justify-content:center;font-size:60px;position:relative}
+  .card-img img{width:100%;height:100%;object-fit:cover;-webkit-touch-callout:none}
+  .card-overlay{position:absolute;inset:0;background:rgba(0,0,0,0);display:flex;align-items:center;justify-content:center;gap:8px;opacity:0;transition:all .2s}
+  .item-card:hover .card-overlay,.item-card:active .card-overlay{opacity:1;background:rgba(0,0,0,.3)}
+  .overlay-btn{background:white;border:none;padding:8px 12px;border-radius:6px;cursor:pointer;font-size:12px;font-weight:600;transition:all .2s;min-height:44px;min-width:44px}
+  .overlay-btn:hover{transform:scale(1.05)}
+  .card-body{padding:12px}
+  .card-header{display:flex;justify-content:space-between;align-items:start;margin-bottom:8px}
+  .card-title{font-size:14px;font-weight:600;color:var(--text);line-height:1.3}
+  .card-brand{font-size:11px;color:var(--muted);text-transform:uppercase}
+  .card-meta{display:flex;justify-content:space-between;font-size:12px;margin-bottom:8px;color:var(--muted)}
+  .card-price{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+  .swap-price{font-size:16px;font-weight:700;color:var(--sage)}
+  .retail-price{text-decoration:line-through;color:var(--muted);font-size:13px}
+  .savings{background:#d4edda;color:#155724;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600}
+  .card-footer{display:flex;gap:6px;justify-content:space-between;padding-top:8px;border-top:1px solid var(--border);font-size:12px}
+  .rating{color:var(--muted)}
+  .views{color:var(--muted)}
+  .wishlist-btn{background:none;border:none;cursor:pointer;font-size:18px;transition:all .2s;padding:4px;min-height:32px;min-width:32px;display:flex;align-items:center;justify-content:center}
+  .wishlist-btn:hover{transform:scale(1.2)}
+  .wishlist-btn.liked{color:var(--rust)}
+  
+  /* BROWSE PAGE */
+  .browse-page{display:grid;grid-template-columns:220px 1fr;gap:24px;padding:24px;max-width:1400px;margin:0 auto}
+  .filter-panel{background:white;border-radius:var(--radius-lg);border:1px solid var(--border);padding:20px;height:fit-content;position:sticky;top:80px}
+  .filter-title{font-family:'Playfair Display',serif;font-size:16px;color:var(--sage-dark);margin-bottom:16px;font-weight:700}
+  .filter-group{margin-bottom:18px}
+  .filter-group-label{font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+  .filter-options{display:flex;flex-direction:column;gap:8px}
+  .filter-check{display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;color:var(--text);padding:4px 0;min-height:32px}
+  .filter-check input[type=checkbox]{accent-color:var(--sage);width:15px;height:15px;cursor:pointer;min-width:15px}
+  .clear-filters{width:100%;padding:10px;background:transparent;border:1.5px solid var(--border);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--muted);cursor:pointer;margin-top:12px;transition:all .2s;min-height:40px;-webkit-appearance:none}
+  .clear-filters:hover{border-color:var(--rust);color:var(--rust)}
+  .clear-filters:active{transform:scale(0.98)}
+  
+  .browse-main{}
+  .browse-controls{display:flex;gap:12px;margin-bottom:20px;align-items:center}
+  .search-bar{flex:1;position:relative}
+  .search-bar input{width:100%;padding:10px 14px 10px 40px;border:1.5px solid var(--border);border-radius:10px;font-family:'DM Sans',sans-serif;font-size:14px;outline:none;transition:border-color .2s;-webkit-appearance:none;min-height:44px}
+  .search-bar input:focus{border-color:var(--sage)}
+  .search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:16px;pointer-events:none}
+  .sort-select{padding:10px 14px;border:1.5px solid var(--border);border-radius:10px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--text);background:white;outline:none;cursor:pointer;min-height:44px;-webkit-appearance:none;-moz-appearance:none;appearance:none;background-image:url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236b6b6b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");background-repeat:no-repeat;background-position:right 8px center;background-size:18px;padding-right:32px}
+  .sort-select:focus{border-color:var(--sage)}
+  
+  .results-count{font-size:13px;color:var(--muted);margin-bottom:16px}
+  .card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px;margin-bottom:24px}
+  .pagination{display:flex;justify-content:center;gap:8px;margin-top:28px;flex-wrap:wrap}
+  .page-btn{width:36px;height:36px;border-radius:8px;border:1.5px solid var(--border);background:white;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;color:var(--muted);transition:all .2s;display:flex;align-items:center;justify-content:center;min-height:44px;min-width:44px;-webkit-tap-highlight-color:transparent}
+  .page-btn.active{background:var(--sage);border-color:var(--sage);color:white}
+  .page-btn:hover:not(.active){border-color:var(--sage);color:var(--sage-dark)}
+  .page-btn:active{transform:scale(0.95)}
+  
+  /* CATEGORIES */
+  .categories-section{background:white;padding:40px 24px;margin-bottom:40px;border-bottom:1px solid var(--border)}
+  .categories-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:16px;max-width:1200px;margin:0 auto;max-width:100%}
+  .category-card{background:var(--cream);padding:20px;border-radius:12px;text-align:center;cursor:pointer;transition:all .2s;border:2px solid transparent;-webkit-tap-highlight-color:transparent;-webkit-appearance:none;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:120px}
+  .category-card:hover{background:var(--sage-light);border-color:var(--sage);transform:translateY(-2px)}
+  .category-card:active{transform:translateY(0px)}
+  .category-icon{font-size:32px;margin-bottom:8px;line-height:1}
+  .category-name{font-size:14px;font-weight:600;color:var(--text)}
+  .category-count{font-size:12px;color:var(--muted);margin-top:4px}
+  
+  /* FOOTER */
+  footer{background:var(--text);color:white;padding:40px 24px;margin-top:60px}
+  .footer-content{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:32px;margin-bottom:32px}
+  .footer-section h4{font-size:14px;font-weight:600;margin-bottom:12px}
+  .footer-section ul{list-style:none}
+  .footer-section a{color:rgba(255,255,255,.7);font-size:13px;display:block;margin-bottom:8px;transition:all .2s}
+  .footer-section a:hover{color:white}
+  .footer-bottom{text-align:center;border-top:1px solid rgba(255,255,255,.2);padding-top:24px;font-size:12px;color:rgba(255,255,255,.6)}
+  
+  /* MODAL */
+  .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.4);display:none;align-items:center;justify-content:center;z-index:200;padding:20px}
+  .modal-overlay.open{display:flex}
+  .modal{background:white;border-radius:var(--radius-lg);padding:28px;max-width:420px;width:100%;animation:fadeIn .25s ease}
+  .modal-title{font-family:'Playfair Display',serif;font-size:20px;color:var(--sage-dark);margin-bottom:12px}
+  .modal-text{font-size:14px;color:var(--muted);margin-bottom:20px;line-height:1.6}
+  .modal-actions{display:flex;gap:10px}
+  .modal-btn{flex:1;padding:12px;border-radius:8px;border:none;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:all .2s}
+  .modal-btn.primary{background:var(--sage);color:white}
+  .modal-btn.primary:hover{background:var(--sage-dark)}
+  .modal-btn.secondary{background:var(--cream);color:var(--muted);border:1.5px solid var(--border)}
+  .modal-btn.secondary:hover{border-color:var(--sage);color:var(--sage-dark)}
+  
+  /* RESPONSIVE */
+  @media(max-width:768px){
+    nav{height:56px;padding:0 16px;gap:8px}
+    .logo{font-size:20px}
+    .nav-center{gap:12px}
+    .nav-tab{padding:6px 12px;font-size:12px}
+    
+    .hero{padding:40px 16px}
+    .hero h1{font-size:32px;margin-bottom:8px}
+    .hero p{font-size:15px;margin-bottom:20px}
+    .hero-search{gap:6px;margin-bottom:20px}
+    .hero-search input,.hero-search button{padding:12px 14px;font-size:14px}
+    .hero-shortcuts{gap:8px}
+    .hero-shortcut{padding:6px 12px;font-size:12px}
+    
+    .stats-section{grid-template-columns:repeat(2,1fr);gap:16px;padding:28px 16px;margin:-25px 16px 32px;margin-top:-20px}
+    .stat-card{padding:16px}
+    .stat-number{font-size:28px}
+    .stat-label{font-size:11px}
+    
+    .featured-grid,.card-grid{grid-template-columns:repeat(2,1fr);gap:12px;padding:0 16px}
+    .section-header{padding:0 16px;margin-bottom:16px}
+    .section-title{font-size:22px;margin-bottom:4px}
+    .section-subtitle{font-size:12px}
+    
+    .browse-page{grid-template-columns:1fr;padding:12px}
+    .filter-panel{position:static;top:auto;padding:16px;margin-bottom:16px;background:var(--warm)}
+    .filter-title{font-size:15px}
+    .filter-group{margin-bottom:14px}
+    .browse-controls{flex-direction:column;gap:10px}
+    .search-bar input,.sort-select{font-size:14px;padding:11px 12px}
+    .card-grid{margin-bottom:16px}
+    
+    .categories-grid{grid-template-columns:repeat(3,1fr);gap:12px;padding:0 16px}
+    .category-card{padding:16px 12px}
+    .category-icon{font-size:28px}
+    .category-name{font-size:13px}
+    
+    .pagination{gap:6px;margin-top:20px;flex-wrap:wrap}
+    .page-btn{width:32px;height:32px;font-size:12px}
+    
+    .results-count{padding:0 16px;font-size:12px}
+    .footer-content{grid-template-columns:repeat(2,1fr);gap:20px}
+    footer{padding:32px 16px}
+  }
+  
+  @media(max-width:480px){
+    nav{height:52px;padding:0 12px}
+    .logo{font-size:18px}
+    .nav-center{gap:8px}
+    .nav-tab{padding:4px 10px;font-size:11px}
+    
+    .hero{padding:32px 12px}
+    .hero h1{font-size:26px;margin-bottom:8px;line-height:1.2}
+    .hero p{font-size:14px;margin-bottom:16px}
+    .hero-search{flex-direction:column;gap:8px;margin-bottom:16px}
+    .hero-search input,.hero-search button{width:100%;padding:11px 12px;font-size:13px}
+    .hero-shortcuts{gap:6px;flex-wrap:wrap}
+    .hero-shortcut{padding:5px 10px;font-size:11px}
+    
+    .stats-section{grid-template-columns:1fr;gap:12px;padding:20px 12px;margin:-15px 12px 24px;margin-top:-12px}
+    .stat-card{padding:12px}
+    .stat-number{font-size:24px}
+    .stat-label{font-size:10px}
+    
+    .featured-grid,.card-grid{grid-template-columns:repeat(2,1fr);gap:10px;padding:0 12px}
+    .section-header{padding:0 12px;margin-bottom:12px}
+    .section-title{font-size:20px;margin-bottom:4px}
+    .section-subtitle{font-size:11px}
+    
+    .browse-page{gap:12px;padding:8px}
+    .filter-panel{padding:12px;margin-bottom:12px}
+    .filter-title{font-size:13px;margin-bottom:12px}
+    .filter-group-label{font-size:10px}
+    .filter-check{font-size:12px}
+    .filter-options{gap:6px}
+    .clear-filters{font-size:12px;padding:6px}
+    
+    .browse-controls{flex-direction:column;gap:8px}
+    .search-bar{position:relative}
+    .search-bar input,.sort-select{font-size:13px;padding:10px 11px}
+    .search-icon{font-size:14px}
+    .results-count{padding:0 12px;font-size:11px;margin-bottom:12px}
+    
+    .item-card{border-radius:8px}
+    .card-badges{top:8px;left:8px;gap:4px}
+    .badge{padding:3px 8px;font-size:9px}
+    .card-body{padding:10px}
+    .card-brand{font-size:10px}
+    .card-title{font-size:12px;line-height:1.2}
+    .card-meta{font-size:10px;margin-bottom:6px}
+    .card-price{font-size:12px;margin-bottom:6px;gap:4px}
+    .swap-price{font-size:14px}
+    .retail-price{font-size:11px}
+    .savings{padding:1px 6px;font-size:9px}
+    .card-footer{font-size:10px;padding-top:6px;gap:4px}
+    
+    .categories-grid{grid-template-columns:repeat(2,1fr);gap:8px;padding:0 12px}
+    .category-card{padding:12px 10px;border-radius:8px}
+    .category-icon{font-size:24px;margin-bottom:6px}
+    .category-name{font-size:12px}
+    .category-count{font-size:10px}
+    
+    .pagination{gap:4px;margin-top:16px;justify-content:center}
+    .page-btn{width:28px;height:28px;font-size:11px;border-radius:6px}
+    
+    .footer-content{grid-template-columns:1fr;gap:16px}
+    .footer-section h4{font-size:13px}
+    .footer-section a{font-size:11px;margin-bottom:6px}
+    footer{padding:24px 12px}
+    .footer-bottom{font-size:10px}
+    
+    .modal{padding:20px;max-width:85vw}
+    .modal-title{font-size:18px}
+    .modal-text{font-size:13px}
+    .modal-btn{font-size:13px;padding:10px}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">Swap<span>Closet</span></div>
+  <div class="nav-center">
+    <button class="nav-tab active" onclick="showPage('home')">Home</button>
+    <button class="nav-tab" onclick="showPage('browse')">Browse</button>
+    <button class="nav-tab" onclick="showPage('list')">Sell</button>
+  </div>
+  <div style="width:60px"></div>
+</nav>
+
+<!-- HOME PAGE -->
+<div class="page active" id="page-home">
+  <div class="hero">
+    <h1>Affordable Fashion For Everyone</h1>
+    <p>Swap instead of buying new and save money</p>
+    <div class="hero-search">
+      <input type="text" placeholder="Search for clothing, brands, styles..." id="hero-search" />
+      <button onclick="heroSearch()">Search</button>
+    </div>
+    <div class="hero-shortcuts">
+      <span class="hero-shortcut" onclick="filterByCategory('Tops')">👕 Women's Tops</span>
+      <span class="hero-shortcut" onclick="filterByCategory('Bottoms')">👖 Jeans & Bottoms</span>
+      <span class="hero-shortcut" onclick="filterByCategory('Shoes')">👟 Footwear</span>
+      <span class="hero-shortcut" onclick="filterByCategory('Accessories')">👜 Bags</span>
+    </div>
+  </div>
+  
+  <div class="stats-section">
+    <div class="stat-card">
+      <div class="stat-number">5000+</div>
+      <div class="stat-label">Clothes Swapped</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">2500+</div>
+      <div class="stat-label">Active Users</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">₹15L</div>
+      <div class="stat-label">Saved Together</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">12000kg</div>
+      <div class="stat-label">CO₂ Reduced</div>
+    </div>
+  </div>
+  
+  <div style="padding:0 24px;margin-bottom:48px">
+    <div class="section-header">
+      <h2 class="section-title">Featured Budget Deals</h2>
+      <p class="section-subtitle">Get the best items for less than ₹500</p>
+    </div>
+    <div class="featured-grid" id="featured-grid"></div>
+  </div>
+  
+  <div style="padding:0 24px;margin-bottom:48px">
+    <div class="section-header">
+      <h2 class="section-title">Trending Near You</h2>
+      <p class="section-subtitle">Most viewed items in your area</p>
+    </div>
+    <div class="featured-grid" id="trending-grid"></div>
+  </div>
+  
+  <div style="padding:0 24px;margin-bottom:48px">
+    <div class="section-header">
+      <h2 class="section-title">Recently Added</h2>
+      <p class="section-subtitle">New listings just added today</p>
+    </div>
+    <div class="featured-grid" id="recent-grid"></div>
+  </div>
+  
+  <div class="categories-section">
+    <div class="section-header">
+      <h2 class="section-title">Popular Categories</h2>
+    </div>
+    <div class="categories-grid">
+      <div class="category-card" onclick="filterByCategory('Tops')">
+        <div class="category-icon">👕</div>
+        <div class="category-name">Women's Wear</div>
+        <div class="category-count">156 items</div>
+      </div>
+      <div class="category-card" onclick="filterByCategory('Bottoms')">
+        <div class="category-icon">👔</div>
+        <div class="category-name">Men's Wear</div>
+        <div class="category-count">98 items</div>
+      </div>
+      <div class="category-card" onclick="filterByCategory('Shoes')">
+        <div class="category-icon">👟</div>
+        <div class="category-name">Footwear</div>
+        <div class="category-count">67 items</div>
+      </div>
+      <div class="category-card" onclick="filterByCategory('Accessories')">
+        <div class="category-icon">👜</div>
+        <div class="category-name">Bags</div>
+        <div class="category-count">45 items</div>
+      </div>
+      <div class="category-card" onclick="filterByCategory('Kids')">
+        <div class="category-icon">👶</div>
+        <div class="category-name">Kids Wear</div>
+        <div class="category-count">52 items</div>
+      </div>
+      <div class="category-card" onclick="filterByCategory('Traditional')">
+        <div class="category-icon">🪡</div>
+        <div class="category-name">Traditional Wear</div>
+        <div class="category-count">38 items</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BROWSE PAGE -->
+<div class="page" id="page-browse">
+  <div class="browse-page">
+    <aside class="filter-panel">
+      <div class="filter-title">Filters</div>
+      
+      <div class="filter-group">
+        <div class="filter-group-label">Price Range</div>
+        <div class="filter-options">
+          <label class="filter-check"><input type="checkbox" data-filter="price-300" onchange="applyFilters()"> Under ₹300</label>
+          <label class="filter-check"><input type="checkbox" data-filter="price-500" onchange="applyFilters()"> ₹300–₹500</label>
+          <label class="filter-check"><input type="checkbox" data-filter="price-1000" onchange="applyFilters()"> ₹500–₹1000</label>
+          <label class="filter-check"><input type="checkbox" data-filter="price-above" onchange="applyFilters()"> Above ₹1000</label>
+        </div>
+      </div>
+      
+      <div class="filter-group">
+        <div class="filter-group-label">Category</div>
+        <div class="filter-options">
+          <label class="filter-check"><input type="checkbox" data-filter="cat-women" onchange="applyFilters()"> Women's Wear</label>
+          <label class="filter-check"><input type="checkbox" data-filter="cat-men" onchange="applyFilters()"> Men's Wear</label>
+          <label class="filter-check"><input type="checkbox" data-filter="cat-kids" onchange="applyFilters()"> Kids Wear</label>
+          <label class="filter-check"><input type="checkbox" data-filter="cat-shoes" onchange="applyFilters()"> Footwear</label>
+          <label class="filter-check"><input type="checkbox" data-filter="cat-bags" onchange="applyFilters()"> Bags</label>
+          <label class="filter-check"><input type="checkbox" data-filter="cat-trad" onchange="applyFilters()"> Traditional</label>
+        </div>
+      </div>
+      
+      <div class="filter-group">
+        <div class="filter-group-label">Condition</div>
+        <div class="filter-options">
+          <label class="filter-check"><input type="checkbox" data-filter="cond-new" onchange="applyFilters()"> New with tags</label>
+          <label class="filter-check"><input type="checkbox" data-filter="cond-like" onchange="applyFilters()"> Like New</label>
+          <label class="filter-check"><input type="checkbox" data-filter="cond-good" onchange="applyFilters()"> Good</label>
+          <label class="filter-check"><input type="checkbox" data-filter="cond-fair" onchange="applyFilters()"> Fair</label>
+        </div>
+      </div>
+      
+      <button class="clear-filters" onclick="clearFilters()">Clear All Filters</button>
+    </aside>
+    
+    <div class="browse-main">
+      <div class="browse-controls">
+        <div class="search-bar">
+          <span class="search-icon">🔍</span>
+          <input type="text" placeholder="Search items, brands..." id="search-input" oninput="applyFilters()" />
+        </div>
+        <select class="sort-select" id="sort-select" onchange="applyFilters()">
+          <option value="newest">Newest</option>
+          <option value="price-low">Price: Low to High</option>
+          <option value="price-high">Price: High to Low</option>
+          <option value="trending">Most Viewed</option>
+        </select>
+      </div>
+      
+      <div class="results-count" id="results-count">Loading items...</div>
+      <div class="card-grid" id="browse-grid"></div>
+      <div class="pagination" id="pagination"></div>
+    </div>
+  </div>
+</div>
+
+<!-- LIST PAGE -->
+<div class="page" id="page-list">
+  <div style="max-width:700px;margin:0 auto;padding:32px 24px">
+    <h1 class="section-title">List Your Item</h1>
+    <p class="section-subtitle" style="margin-bottom:24px">Share clothing you no longer wear</p>
+    
+    <div style="background:white;border-radius:12px;border:1px solid var(--border);padding:24px">
+      <div style="text-align:center;padding:40px;color:var(--muted)">
+        <p style="font-size:16px;margin-bottom:12px">📸 Upload Your Item</p>
+        <p style="font-size:13px">Feature coming soon. Upload to list your items.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-content">
+    <div class="footer-section">
+      <h4>About SwapCloset</h4>
+      <ul>
+        <li><a href="#">About Us</a></li>
+        <li><a href="#">How It Works</a></li>
+        <li><a href="#">Sustainability</a></li>
+        <li><a href="#">Blog</a></li>
+      </ul>
+    </div>
+    <div class="footer-section">
+      <h4>Community</h4>
+      <ul>
+        <li><a href="#">Browse</a></li>
+        <li><a href="#">Sell</a></li>
+        <li><a href="#">Reviews</a></li>
+        <li><a href="#">Help</a></li>
+      </ul>
+    </div>
+    <div class="footer-section">
+      <h4>Support</h4>
+      <ul>
+        <li><a href="#">FAQ</a></li>
+        <li><a href="#">Contact Us</a></li>
+        <li><a href="#">Report Issue</a></li>
+        <li><a href="#">Safety Tips</a></li>
+      </ul>
+    </div>
+    <div class="footer-section">
+      <h4>Legal</h4>
+      <ul>
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Terms & Conditions</a></li>
+        <li><a href="#">Cookie Policy</a></li>
+        <li><a href="#">Refund Policy</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; 2026 SwapCloset. All rights reserved. | Made with ❤️ for sustainable fashion.</p>
+  </div>
+</footer>
+
+<script>
+// ==================== DATA ====================
+const ITEMS = [
+  // WOMEN'S WEAR (25 items)
+  {id:1,title:"Cotton Kurti - Yellow",category:"Tops",gender:"Women",size:"M",condition:"Like New",value:280,retailPrice:450,images:["https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=400&auto=format","https://images.unsplash.com/photo-1578762996442-48f60103fc96?w=400&auto=format"],material:"100% Cotton",location:"Kazhakuttam",distance:2.1,views:145,interested:8,days:0,color:"Yellow",brand:"Fab India",saved:false,verifications:["email","phone"]},
+  {id:2,title:"Casual T-Shirt - Blue",category:"Tops",gender:"Women",size:"S",condition:"Good",value:150,retailPrice:350,images:["https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&auto=format","https://images.unsplash.com/photo-1555062645-c07966039541?w=400&auto=format"],material:"100% Cotton",location:"Technopark",distance:4.2,views:89,interested:5,days:1,color:"Blue",brand:"H&M",saved:false,verifications:["email","phone"]},
+  {id:3,title:"Denim Jeans - Black",category:"Bottoms",gender:"Women",size:"M",condition:"Like New",value:450,retailPrice:1200,images:["https://images.unsplash.com/photo-1542272604-787c3835535d?w=400&auto=format","https://images.unsplash.com/photo-1582552938357-32b906df40cd?w=400&auto=format"],material:"99% Cotton, 1% Spandex",location:"Pattom",distance:1.5,views:234,interested:12,days:2,color:"Black",brand:"Lee",saved:false,verifications:["email","phone","seller"]},
+  {id:4,title:"Black Leggings",category:"Bottoms",gender:"Women",size:"L",condition:"Good",value:120,retailPrice:350,images:["https://images.unsplash.com/photo-1506629082632-41ba4e61a2b7?w=400&auto=format"],material:"88% Nylon, 12% Spandex",location:"Kowdiar",distance:3.8,views:67,interested:4,days:3,color:"Black",brand:"Decathlon",saved:false,verifications:["email","phone"]},
+  {id:5,title:"Silk Saree - Maroon",category:"Traditional",gender:"Women",size:"One Size",condition:"Like New",value:650,retailPrice:2500,images:["https://images.unsplash.com/photo-1589066823667-7e5babc54232?w=400&auto=format"],material:"100% Silk",location:"Karyavattom",distance:5.1,views:112,interested:7,days:1,color:"Maroon",brand:"Sarangi",saved:false,verifications:["email","phone","seller"]},
+  {id:6,title:"Gray Hoodie",category:"Tops",gender:"Women",size:"M",condition:"Good",value:380,retailPrice:1200,images:["https://images.unsplash.com/photo-1556821552-5f334c56736d?w=400&auto=format"],material:"80% Cotton, 20% Polyester",location:"Sreekaryam",distance:2.9,views:156,interested:9,days:0,color:"Gray",brand:"H&M",saved:false,verifications:["email","phone"]},
+  {id:7,title:"Casual Shirt - Peach",category:"Tops",gender:"Women",size:"S",condition:"Like New",value:220,retailPrice:650,images:["https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=400&auto=format"],material:"100% Cotton",location:"Vazhuthacaud",distance:3.2,views:98,interested:6,days:2,color:"Peach",brand:"Forever 21",saved:false,verifications:["email"]},
+  {id:8,title:"Running Shorts",category:"Bottoms",gender:"Women",size:"M",condition:"Good",value:180,retailPrice:599,images:["https://images.unsplash.com/photo-1506629082632-41ba4e61a2b7?w=400&auto=format"],material:"93% Polyester, 7% Spandex",location:"Attingal",distance:6.5,views:54,interested:3,days:4,color:"Black",brand:"Nike",saved:false,verifications:["email"]},
+  {id:9,title:"Kurti Palazzo Set",category:"Traditional",gender:"Women",size:"M",condition:"Like New",value:420,retailPrice:1500,images:["https://images.unsplash.com/photo-1578762996442-48f60103fc96?w=400&auto=format"],material:"100% Cotton",location:"Neyyattinkara",distance:7.8,views:189,interested:11,days:1,color:"Green",brand:"Khesh",saved:false,verifications:["email","phone","seller"]},
+  {id:10,title:"White T-Shirt",category:"Tops",gender:"Women",size:"L",condition:"Good",value:95,retailPrice:250,images:["https://images.unsplash.com/photo-1555062645-c07966039541?w=400&auto=format"],material:"100% Cotton",location:"Karyavattom",distance:4.3,views:76,interested:4,days:3,color:"White",brand:"Uniqlo",saved:false,verifications:["email","phone"]},
+  {id:11,title:"Jeans Jacket",category:"Tops",gender:"Women",size:"M",condition:"Good",value:520,retailPrice:1800,images:["https://images.unsplash.com/photo-1551028719-00167b16ebc5?w=400&auto=format"],material:"100% Cotton Denim",location:"Trivandrum City",distance:2.1,views:203,interested:14,days:0,color:"Blue",brand:"Levi's",saved:false,verifications:["email","phone","seller"]},
+  {id:12,title:"Cotton Pants - Beige",category:"Bottoms",gender:"Women",size:"S",condition:"Like New",value:280,retailPrice:899,images:["https://images.unsplash.com/photo-1542272604-787c3835535d?w=400&auto=format"],material:"100% Cotton",location:"Sreekaryam",distance:3.6,views:134,interested:8,days:2,color:"Beige",brand:"Gap",saved:false,verifications:["email","phone"]},
+  {id:13,title:"Embroidered Kurti",category:"Traditional",gender:"Women",size:"L",condition:"Like New",value:350,retailPrice:1200,images:["https://images.unsplash.com/photo-1578762996442-48f60103fc96?w=400&auto=format"],material:"100% Cotton",location:"Kazhakuttam",distance:2.4,views:167,interested:9,days:1,color:"Purple",brand:"Unnati Silks",saved:false,verifications:["email","phone","seller"]},
+  {id:14,title:"Summer Dress",category:"Bottoms",gender:"Women",size:"M",condition:"Good",value:290,retailPrice:799,images:["https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=400&auto=format"],material:"100% Linen",location:"Pattom",distance:1.8,views:145,interested:7,days:3,color:"White",brand:"Zara",saved:false,verifications:["email"]},
+  {id:15,title:"Formal Blazer",category:"Tops",gender:"Women",size:"M",condition:"Like New",value:680,retailPrice:2200,images:["https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=400&auto=format"],material:"80% Polyester, 20% Viscose",location:"Kowdiar",distance:3.5,views:198,interested:12,days:0,color:"Black",brand:"Forever 21",saved:false,verifications:["email","phone","seller"]},
+  {id:46,title:"Floral Print Dress",category:"Bottoms",gender:"Women",size:"M",condition:"Like New",value:380,retailPrice:999,images:["https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=400&auto=format"],material:"100% Cotton",location:"Sreekaryam",distance:2.8,views:167,interested:9,days:1,color:"Floral",brand:"Mango",saved:false,verifications:["email","phone","seller"]},
+  {id:47,title:"Linen Trousers",category:"Bottoms",gender:"Women",size:"S",condition:"Good",value:320,retailPrice:899,images:["https://images.unsplash.com/photo-1542272604-787c3835535d?w=400&auto=format"],material:"100% Linen",location:"Vazhuthacaud",distance:3.9,views:123,interested:7,days:2,color:"Cream",brand:"Zara",saved:false,verifications:["email"]},
+  {id:48,title:"Graphic T-Shirt",category:"Tops",gender:"Women",size:"M",condition:"Like New",value:140,retailPrice:399,images:["https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&auto=format"],material:"100% Cotton",location:"Kazhakuttam",distance:2.7,views:198,interested:11,days:0,color:"Charcoal",brand:"Uniqlo",saved:false,verifications:["email","phone"]},
+  {id:49,title:"High-Waist Jeans",category:"Bottoms",gender:"Women",size:"M",condition:"Like New",value:480,retailPrice:1299,images:["https://images.unsplash.com/photo-1542272604-787c3835535d?w=400&auto=format"],material:"99% Cotton, 1% Spandex",location:"Pattom",distance:1.4,views:289,interested:16,days:0,color:"Dark Blue",brand:"Topshop",saved:false,verifications:["email","phone","seller"]},
+  {id:50,title:"Wrap Blouse",category:"Tops",gender:"Women",size:"L",condition:"Good",value:240,retailPrice:649,images:["https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=400&auto=format"],material:"100% Viscose",location:"Technopark",distance:4.8,views:112,interested:6,days:3,color:"Terracotta",brand:"H&M",saved:false,verifications:["email"]},
+  
+  // MEN'S WEAR (15 items)
+  {id:16,title:"Polo T-Shirt - White",category:"Tops",gender:"Men",size:"L",condition:"Good",value:140,retailPrice:399,images:["https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&auto=format"],material:"100% Cotton",location:"Technopark",distance:4.5,views:89,interested:5,days:2,color:"White",brand:"Decathlon",saved:false,verifications:["email","phone"]},
+  {id:17,title:"Jeans - Dark Blue",category:"Bottoms",gender:"Men",size:"32",condition:"Like New",value:420,retailPrice:1500,images:["https://images.unsplash.com/photo-1542272604-787c3835535d?w=400&auto=format"],material:"99% Cotton, 1% Spandex",location:"Karyavattom",distance:5.2,views:167,interested:9,days:1,color:"Dark Blue",brand:"Levi's",saved:false,verifications:["email","phone","seller"]},
+  {id:18,title:"Formal Shirt",category:"Tops",gender:"Men",size:"M",condition:"Like New",value:280,retailPrice:899,images:["https://images.unsplash.com/photo-1596848212624-753bb62bc938?w=400&auto=format"],material:"100% Cotton",location:"Sreekaryam",distance:3.1,views:123,interested:6,days:3,color:"Light Blue",brand:"Raymond",saved:false,verifications:["email","phone"]},
+  {id:19,title:"Casual Pants - Khaki",category:"Bottoms",gender:"Men",size:"34",condition:"Good",value:240,retailPrice:699,images:["https://images.unsplash.com/photo-1542272604-787c3835535d?w=400&auto=format"],material:"100% Cotton",location:"Vazhuthacaud",distance:2.8,views:78,interested:4,days:4,color:"Khaki",brand:"Arrow",saved:false,verifications:["email"]},
+  {id:20,title:"Hoodie - Gray",category:"Tops",gender:"Men",size:"L",condition:"Good",value:350,retailPrice:1099,images:["https://images.unsplash.com/photo-1556821552-5f334c56736d?w=400&auto=format"],material:"80% Cotton, 20% Polyester",location:"Attingal",distance:6.8,views:145,interested:8,days:0,color:"Gray",brand:"Decathlon",saved:false,verifications:["email","phone","seller"]},
+  {id:21,title:"Short Sleeve Shirt",category:"Tops",gender:"Men",size:"M",condition:"Like New",value:180,retailPrice:599,images:["https://images.unsplash.com/photo-1596848212624-753bb62bc938?w=400&auto=format"],material:"100% Cotton",location:"Neyyattinkara",distance:7.5,views:98,interested:5,days:2,color:"White",brand:"Uniqlo",saved:false,verifications:["email","phone"]},
+  {id:22,title:"Chinos - Beige",category:"Bottoms",gender:"Men",size:"32",condition:"Good",value:320,retailPrice:999,images:["https://images.unsplash.com/photo-1542272604-787c3835535d?w=400&auto=format"],material:"98% Cotton, 2% Spandex",location:"Trivandrum City",distance:1.9,views:112,interested:6,days:1,color:"Beige",brand:"Gap",saved:false,verifications:["email","phone"]},
+  {id:23,title:"V-Neck T-Shirt",category:"Tops",gender:"Men",size:"S",condition:"Like New",value:110,retailPrice:350,images:["https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&auto=format"],material:"100% Cotton",location:"Kazhakuttam",distance:2.3,views:134,interested:7,days:3,color:"Black",brand:"H&M",saved:false,verifications:["email","phone"]},
+  {id:24,title:"Cargo Shorts - Olive",category:"Bottoms",gender:"Men",size:"M",condition:"Good",value:220,retailPrice:699,images:["https://images.unsplash.com/photo-1506629082632-41ba4e61a2b7?w=400&auto=format"],material:"100% Cotton Canvas",location:"Pattom",distance:1.6,views:89,interested:4,days:4,color:"Olive",brand:"Decathlon",saved:false,verifications:["email"]},
+  {id:25,title:"Oxford Shirt",category:"Tops",gender:"Men",size:"L",condition:"Like New",value:420,retailPrice:1299,images:["https://images.unsplash.com/photo-1596848212624-753bb62bc938?w=400&auto=format"],material:"100% Cotton",location:"Kowdiar",distance:3.7,views:156,interested:9,days:0,color:"Maroon",brand:"Tommy Hilfiger",saved:false,verifications:["email","phone","seller"]},
+  {id:51,title:"Henley T-Shirt",category:"Tops",gender:"Men",size:"M",condition:"Good",value:160,retailPrice:449,images:["https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&auto=format"],material:"100% Cotton",location:"Sreekaryam",distance:3.4,views:145,interested:8,days:2,color:"Navy",brand:"Uniqlo",saved:false,verifications:["email","phone"]},
+  {id:52,title:"Linen Shirt",category:"Tops",gender:"Men",size:"L",condition:"Like New",value:380,retailPrice:999,images:["https://images.unsplash.com/photo-1596848212624-753bb62bc938?w=400&auto=format"],material:"100% Linen",location:"Vazhuthacaud",distance:4.1,views:189,interested:10,days:1,color:"Beige",brand:"H&M",saved:false,verifications:["email","phone","seller"]},
+  {id:53,title:"Sports T-Shirt",category:"Tops",gender:"Men",size:"M",condition:"Like New",value:180,retailPrice:549,images:["https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&auto=format"],material:"100% Polyester",location:"Technopark",distance:5.3,views:112,interested:6,days:3,color:"Black",brand:"Nike",saved:false,verifications:["email"]},
+  {id:54,title:"Dress Pants",category:"Bottoms",gender:"Men",size:"34",condition:"Good",value:360,retailPrice:999,images:["https://images.unsplash.com/photo-1542272604-787c3835535d?w=400&auto=format"],material:"65% Polyester, 35% Cotton",location:"Kazhakuttam",distance:2.2,views:98,interested:5,days:4,color:"Black",brand:"Raymond",saved:false,verifications:["email"]},
+  {id:55,title:"Casual Blazer",category:"Tops",gender:"Men",size:"L",condition:"Good",value:680,retailPrice:1999,images:["https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=400&auto=format"],material:"70% Polyester, 30% Viscose",location:"Pattom",distance:1.7,views:234,interested:13,days:0,color:"Navy",brand:"Zara",saved:false,verifications:["email","phone","seller"]},
+  
+  // FOOTWEAR (8 items)
+  {id:26,title:"Sports Shoes - White",category:"Shoes",gender:"Unisex",size:"UK 8",condition:"Good",value:680,retailPrice:2499,images:["https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&auto=format","https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?w=400&auto=format"],material:"Mesh & Rubber",location:"Sreekaryam",distance:4.1,views:289,interested:16,days:1,color:"White",brand:"Nike",saved:false,verifications:["email","phone","seller"]},
+  {id:27,title:"Casual Sneakers",category:"Shoes",gender:"Unisex",size:"UK 7",condition:"Like New",value:450,retailPrice:1299,images:["https://images.unsplash.com/photo-1525966222134-fcebfc881d86?w=400&auto=format"],material:"Canvas & Rubber",location:"Kazhakuttam",distance:2.5,views:156,interested:9,days:2,color:"Gray",brand:"Decathlon",saved:false,verifications:["email","phone"]},
+  {id:28,title:"Formal Shoes",category:"Shoes",gender:"Men",size:"UK 9",condition:"Good",value:520,retailPrice:1599,images:["https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=400&auto=format"],material:"Genuine Leather",location:"Technopark",distance:5.3,views:123,interested:7,days:3,color:"Black",brand:"Bata",saved:false,verifications:["email"]},
+  {id:29,title:"Flip Flops - Blue",category:"Shoes",gender:"Unisex",size:"UK 8",condition:"Good",value:90,retailPrice:299,images:["https://images.unsplash.com/photo-1572821613579-b03ecb72f359?w=400&auto=format"],material:"EVA Foam",location:"Vazhuthacaud",distance:3.4,views:76,interested:4,days:4,color:"Blue",brand:"Decathlon",saved:false,verifications:["email"]},
+  {id:30,title:"Running Shoes",category:"Shoes",gender:"Women",size:"UK 6",condition:"Like New",value:750,retailPrice:2999,images:["https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&auto=format"],material:"Mesh & Rubber",location:"Pattom",distance:1.7,views:198,interested:12,days:0,color:"Pink",brand:"Adidas",saved:false,verifications:["email","phone","seller"]},
+  {id:56,title:"Canvas Shoes",category:"Shoes",gender:"Unisex",size:"UK 7",condition:"Like New",value:280,retailPrice:749,images:["https://images.unsplash.com/photo-1525966222134-fcebfc881d86?w=400&auto=format"],material:"Canvas",location:"Kowdiar",distance:4.2,views:167,interested:9,days:1,color:"White",brand:"Converse",saved:false,verifications:["email","phone","seller"]},
+  {id:57,title:"Loafers",category:"Shoes",gender:"Men",size:"UK 8",condition:"Good",value:420,retailPrice:1199,images:["https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=400&auto=format"],material:"Genuine Leather",location:"Sreekaryam",distance:3.8,views:134,interested:7,days:2,color:"Brown",brand:"Clarks",saved:false,verifications:["email"]},
+  {id:58,title:"Sandals - Black",category:"Shoes",gender:"Unisex",size:"UK 9",condition:"Good",value:160,retailPrice:449,images:["https://images.unsplash.com/photo-1572821613579-b03ecb72f359?w=400&auto=format"],material:"Leather & Rubber",location:"Vazhuthacaud",distance:3.6,views:89,interested:5,days:3,color:"Black",brand:"Clarks",saved:false,verifications:["email"]},
+  
+  // BAGS (7 items)
+  {id:31,title:"College Backpack",category:"Accessories",gender:"Unisex",size:"One Size",condition:"Good",value:420,retailPrice:1299,images:["https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400&auto=format","https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400&auto=format"],material:"Polyester",location:"Kowdiar",distance:4.2,views:167,interested:10,days:1,color:"Black",brand:"Decathlon",saved:false,verifications:["email","phone","seller"]},
+  {id:32,title:"Shoulder Bag - Brown",category:"Accessories",gender:"Women",size:"One Size",condition:"Like New",value:380,retailPrice:1199,images:["https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=400&auto=format"],material:"Genuine Leather",location:"Sreekaryam",distance:3.3,views:145,interested:8,days:2,color:"Brown",brand:"Hidesign",saved:false,verifications:["email","phone"]},
+  {id:33,title:"School Bag",category:"Accessories",gender:"Kids",size:"One Size",condition:"Good",value:280,retailPrice:899,images:["https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400&auto=format"],material:"Polyester",location:"Kazhakuttam",distance:2.2,views:112,interested:6,days:3,color:"Blue",brand:"Decathlon",saved:false,verifications:["email","phone"]},
+  {id:34,title:"Crossbody Bag",category:"Accessories",gender:"Women",size:"One Size",condition:"Like New",value:350,retailPrice:1099,images:["https://images.unsplash.com/photo-1590874103328-eac38a683ce7?w=400&auto=format"],material:"Canvas",location:"Technopark",distance:5.1,views:178,interested:10,days:1,color:"Olive",brand:"Fossil",saved:false,verifications:["email","phone","seller"]},
+  {id:35,title:"Sports Duffel Bag",category:"Accessories",gender:"Unisex",size:"One Size",condition:"Good",value:320,retailPrice:999,images:["https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400&auto=format"],material:"Polyester",location:"Vazhuthacaud",distance:3.6,views:98,interested:5,days:4,color:"Black",brand:"Decathlon",saved:false,verifications:["email"]},
+  {id:59,title:"Tote Bag",category:"Accessories",gender:"Women",size:"One Size",condition:"Like New",value:290,retailPrice:799,images:["https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=400&auto=format"],material:"Canvas",location:"Pattom",distance:1.9,views:156,interested:9,days:0,color:"Tan",brand:"Zara",saved:false,verifications:["email","phone"]},
+  {id:60,title:"Laptop Backpack",category:"Accessories",gender:"Unisex",size:"One Size",condition:"Good",value:520,retailPrice:1599,images:["https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400&auto=format"],material:"Polyester",location:"Kazhakuttam",distance:2.4,views:198,interested:11,days:1,color:"Gray",brand:"Decathlon",saved:false,verifications:["email","phone","seller"]},
+  
+  // KIDS WEAR (8 items)
+  {id:36,title:"Kids T-Shirt",category:"Kids",gender:"Unisex",size:"5-6Y",condition:"Like New",value:85,retailPrice:299,images:["https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&auto=format"],material:"100% Cotton",location:"Attingal",distance:6.6,views:134,interested:8,days:0,color:"Red",brand:"H&M",saved:false,verifications:["email","phone"]},
+  {id:37,title:"Kids Jeans",category:"Kids",gender:"Unisex",size:"7-8Y",condition:"Good",value:180,retailPrice:599,images:["https://images.unsplash.com/photo-1542272604-787c3835535d?w=400&auto=format"],material:"99% Cotton, 1% Spandex",location:"Neyyattinkara",distance:7.4,views:89,interested:5,days:2,color:"Blue",brand:"Decathlon",saved:false,verifications:["email"]},
+  {id:38,title:"Kids Hoodie",category:"Kids",gender:"Unisex",size:"6-7Y",condition:"Like New",value:220,retailPrice:699,images:["https://images.unsplash.com/photo-1556821552-5f334c56736d?w=400&auto=format"],material:"80% Cotton, 20% Polyester",location:"Trivandrum City",distance:2.0,views:156,interested:9,days:1,color:"Green",brand:"Gap Kids",saved:false,verifications:["email","phone","seller"]},
+  {id:39,title:"Kids Shorts",category:"Kids",gender:"Unisex",size:"5-6Y",condition:"Good",value:110,retailPrice:349,images:["https://images.unsplash.com/photo-1506629082632-41ba4e61a2b7?w=400&auto=format"],material:"100% Cotton",location:"Kazhakuttam",distance:2.6,views:78,interested:4,days:3,color:"Khaki",brand:"Uniqlo",saved:false,verifications:["email"]},
+  {id:40,title:"Kids Summer Dress",category:"Kids",gender:"Female",size:"7-8Y",condition:"Like New",value:160,retailPrice:549,images:["https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=400&auto=format"],material:"100% Cotton",location:"Pattom",distance:1.5,views:123,interested:7,days:0,color:"Pink",brand:"Forever 21 Girls",saved:false,verifications:["email","phone"]},
+  {id:61,title:"Kids Cardigan",category:"Kids",gender:"Unisex",size:"8-9Y",condition:"Like New",value:240,retailPrice:649,images:["https://images.unsplash.com/photo-1556821552-5f334c56736d?w=400&auto=format"],material:"100% Cotton",location:"Sreekaryam",distance:3.1,views:145,interested:8,days:2,color:"Mint",brand:"Gap Kids",saved:false,verifications:["email","phone"]},
+  {id:62,title:"Kids Polo Shirt",category:"Kids",gender:"Unisex",size:"6-7Y",condition:"Good",value:120,retailPrice:399,images:["https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&auto=format"],material:"100% Cotton",location:"Vazhuthacaud",distance:4.0,views:156,interested:8,days:1,color:"White",brand:"Decathlon",saved:false,verifications:["email"]},
+  {id:63,title:"Kids Skirt",category:"Kids",gender:"Female",size:"7-8Y",condition:"Like New",value:140,retailPrice:449,images:["https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=400&auto=format"],material:"100% Cotton",location:"Kazhakuttam",distance:2.5,views:98,interested:5,days:3,color:"Navy",brand:"H&M",saved:false,verifications:["email"]},
+  
+  // ADDITIONAL VARIETY ITEMS (11 items)
+  {id:41,title:"Cargo Jacket",category:"Tops",gender:"Women",size:"M",condition:"Good",value:480,retailPrice:1599,images:["https://images.unsplash.com/photo-1551028719-00167b16ebc5?w=400&auto=format"],material:"100% Cotton",location:"Kowdiar",distance:4.0,views:145,interested:8,days:1,color:"Olive",brand:"Zara",saved:false,verifications:["email","phone"]},
+  {id:42,title:"Track Pants",category:"Bottoms",gender:"Men",size:"M",condition:"Like New",value:280,retailPrice:899,images:["https://images.unsplash.com/photo-1506629082632-41ba4e61a2b7?w=400&auto=format"],material:"100% Polyester",location:"Sreekaryam",distance:3.2,views:167,interested:9,days:2,color:"Black",brand:"Nike",saved:false,verifications:["email","phone","seller"]},
+  {id:43,title:"Silk Top - Navy",category:"Tops",gender:"Women",size:"S",condition:"Like New",value:390,retailPrice:1299,images:["https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=400&auto=format"],material:"100% Silk",location:"Vazhuthacaud",distance:3.5,views:198,interested:11,days:0,color:"Navy",brand:"Mango",saved:false,verifications:["email","phone","seller"]},
+  {id:44,title:"Denim Shirt - Light Blue",category:"Tops",gender:"Men",size:"L",condition:"Good",value:340,retailPrice:1099,images:["https://images.unsplash.com/photo-1596848212624-753bb62bc938?w=400&auto=format"],material:"100% Cotton Denim",location:"Technopark",distance:5.0,views:112,interested:6,days:3,color:"Light Blue",brand:"Lee",saved:false,verifications:["email","phone"]},
+  {id:45,title:"Ankle Boots",category:"Shoes",gender:"Women",size:"UK 5",condition:"Like New",value:620,retailPrice:1999,images:["https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=400&auto=format"],material:"Suede & Rubber",location:"Attingal",distance:6.7,views:178,interested:10,days:1,color:"Black",brand:"Steve Madden",saved:false,verifications:["email","phone","seller"]},
+  {id:64,title:"Linen Jacket",category:"Tops",gender:"Women",size:"M",condition:"Good",value:520,retailPrice:1699,images:["https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=400&auto=format"],material:"100% Linen",location:"Pattom",distance:1.6,views:234,interested:13,days:0,color:"White",brand:"H&M",saved:false,verifications:["email","phone","seller"]},
+  {id:65,title:"Gym Leggings",category:"Bottoms",gender:"Women",size:"M",condition:"Like New",value:250,retailPrice:699,images:["https://images.unsplash.com/photo-1506629082632-41ba4e61a2b7?w=400&auto=format"],material:"88% Polyester, 12% Spandex",location:"Kazhakuttam",distance:2.3,views:189,interested:10,days:1,color:"Black",brand:"Nike",saved:false,verifications:["email","phone"]},
+  {id:66,title:"Sweater - Cream",category:"Tops",gender:"Women",size:"S",condition:"Good",value:360,retailPrice:899,images:["https://images.unsplash.com/photo-1556821552-5f334c56736d?w=400&auto=format"],material:"80% Acrylic, 20% Wool",location:"Sreekaryam",distance:3.3,views:145,interested:8,days:2,color:"Cream",brand:"Zara",saved:false,verifications:["email"]},
+  {id:67,title:"Midi Skirt",category:"Bottoms",gender:"Women",size:"M",condition:"Like New",value:320,retailPrice:799,images:["https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=400&auto=format"],material:"100% Polyester",location:"Vazhuthacaud",distance:4.2,views:167,interested:9,days:0,color:"Gray",brand:"Mango",saved:false,verifications:["email","phone","seller"]},
+  {id:68,title:"Denim Shorts",category:"Bottoms",gender:"Women",size:"L",condition:"Good",value:210,retailPrice:599,images:["https://images.unsplash.com/photo-1506629082632-41ba4e61a2b7?w=400&auto=format"],material:"100% Cotton Denim",location:"Technopark",distance:5.4,views:123,interested:7,days:2,color:"Light Blue",brand:"Lee",saved:false,verifications:["email"]},
+  {id:69,title:"Mandarin Collar Shirt",category:"Tops",gender:"Men",size:"M",condition:"Like New",value:280,retailPrice:749,images:["https://images.unsplash.com/photo-1596848212624-753bb62bc938?w=400&auto=format"],material:"100% Cotton",location:"Kowdiar",distance:3.8,views:198,interested:11,days:0,color:"Red",brand:"Fabindia",saved:false,verifications:["email","phone","seller"]},
+  {id:70,title:"Waistcoat",category:"Tops",gender:"Men",size:"L",condition:"Good",value:420,retailPrice:1199,images:["https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=400&auto=format"],material:"70% Polyester, 30% Viscose",location:"Pattom",distance:1.8,views:145,interested:8,days:1,color:"Black",brand:"Raymond",saved:false,verifications:["email"]}
+];
+
+const LOCATIONS = ["Kazhakuttam","Technopark","Pattom","Kowdiar","Karyavattom","Sreekaryam","Vazhuthacaud","Attingal","Neyyattinkara","Trivandrum City"];
+
+let currentPage = 1;
+const PER_PAGE = 12;
+let filteredItems = [...ITEMS];
+let liked = {};
+
+// ==================== FUNCTIONS ====================
+function showPage(p){
+  document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(x=>x.classList.remove('active'));
+  document.getElementById('page-'+p).classList.add('active');
+  const navTabs = {'home':0,'browse':1,'list':2};
+  if(navTabs[p]!==undefined) document.querySelectorAll('.nav-tab')[navTabs[p]].classList.add('active');
+  if(p==='browse') renderBrowse();
+  else if(p==='home') renderHome();
+}
+
+function renderHome(){
+  // Featured deals (under ₹500)
+  const featured = ITEMS.filter(i=>i.value<500).sort((a,b)=>b.views-a.views).slice(0,6);
+  document.getElementById('featured-grid').innerHTML = featured.map(renderCard).join('');
+  
+  // Trending (most viewed)
+  const trending = ITEMS.sort((a,b)=>b.views-a.views).slice(0,6);
+  document.getElementById('trending-grid').innerHTML = trending.map(renderCard).join('');
+  
+  // Recently added
+  const recent = ITEMS.sort((a,b)=>a.days-b.days).slice(0,6);
+  document.getElementById('recent-grid').innerHTML = recent.map(renderCard).join('');
+}
+
+function renderCard(item){
+  const savings = item.retailPrice - item.value;
+  const savingsPercent = Math.round((savings/item.retailPrice)*100);
+  let badges = '';
+  if(item.value<300) badges += '<span class="badge badge-budget">Budget Friendly</span>';
+  if(item.category==='Kids' || item.category==='Bottoms') badges += '<span class="badge badge-student">Student Choice</span>';
+  if(savings>1000) badges += '<span class="badge badge-deal">Best Deal</span>';
+  if(item.views>200) badges += '<span class="badge badge-trending">Trending</span>';
+  
+  const img = item.images && item.images[0] ? `<img src="${item.images[0]}" alt="${item.title}"/>` : item.category;
+  
+  return `
+    <div class="item-card">
+      <div class="card-badges">${badges}</div>
+      <div class="card-img">${img}
+        <div class="card-overlay">
+          <button class="overlay-btn">👁️ View</button>
+          <button class="overlay-btn">❤️ Save</button>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="card-brand">${item.brand}</div>
+        <div class="card-title" title="${item.title}">${item.title}</div>
+        <div class="card-meta">
+          <span>${item.size}</span>
+          <span>${item.color}</span>
+        </div>
+        <div class="card-price">
+          <span class="swap-price">₹${item.value}</span>
+          <span class="retail-price">₹${item.retailPrice}</span>
+          <span class="savings">Save ${savingsPercent}%</span>
+        </div>
+        <div style="font-size:11px;color:var(--muted);margin-bottom:8px">📍 ${item.location} • ${item.distance}km away</div>
+        <div class="card-footer">
+          <span class="rating">${item.condition}</span>
+          <span class="views">👁️ ${item.views}</span>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function renderBrowse(){
+  const start = (currentPage-1)*PER_PAGE;
+  const slice = filteredItems.slice(start,start+PER_PAGE);
+  document.getElementById('results-count').textContent = `Showing ${filteredItems.length} items`;
+  document.getElementById('browse-grid').innerHTML = slice.map(renderCard).join('');
+  renderPagination();
+}
+
+function renderPagination(){
+  const total = Math.ceil(filteredItems.length/PER_PAGE);
+  const pg = document.getElementById('pagination');
+  pg.innerHTML = '';
+  if(total<=1) return;
+  
+  const maxPages = window.innerWidth<=480 ? 5 : (window.innerWidth<=768 ? 8 : 10);
+  let startPage = 1;
+  if(currentPage > Math.ceil(maxPages/2)){
+    startPage = Math.min(currentPage - Math.floor(maxPages/2), total - maxPages + 1);
+  }
+  const endPage = Math.min(startPage + maxPages - 1, total);
+  
+  if(startPage > 1){
+    const b = document.createElement('button');
+    b.className = 'page-btn';
+    b.textContent = '«';
+    b.onclick = ()=>{currentPage=1;renderBrowse();window.scrollTo(0,0)};
+    pg.appendChild(b);
+  }
+  
+  for(let i=startPage;i<=endPage;i++){
+    const b = document.createElement('button');
+    b.className = 'page-btn' + (i===currentPage?' active':'');
+    b.textContent = i;
+    b.onclick = ()=>{currentPage=i;renderBrowse();window.scrollTo(0,0)};
+    pg.appendChild(b);
+  }
+  
+  if(endPage < total){
+    const b = document.createElement('button');
+    b.className = 'page-btn';
+    b.textContent = '»';
+    b.onclick = ()=>{currentPage=total;renderBrowse();window.scrollTo(0,0)};
+    pg.appendChild(b);
+  }
+}
+
+function applyFilters(){
+  const search = document.getElementById('search-input').value.toLowerCase();
+  const sort = document.getElementById('sort-select').value;
+  const checked = Array.from(document.querySelectorAll('input[type=checkbox]:checked')).map(x=>x.dataset.filter);
+  
+  filteredItems = ITEMS.filter(item=>{
+    if(search && !item.title.toLowerCase().includes(search) && !item.brand.toLowerCase().includes(search)) return false;
+    
+    if(checked.length>0){
+      let match = false;
+      if(checked.includes('price-300') && item.value<300) match=true;
+      if(checked.includes('price-500') && item.value>=300 && item.value<500) match=true;
+      if(checked.includes('price-1000') && item.value>=500 && item.value<1000) match=true;
+      if(checked.includes('price-above') && item.value>=1000) match=true;
+      if(!match) return false;
+    }
+    return true;
+  });
+  
+  if(sort==='price-low') filteredItems.sort((a,b)=>a.value-b.value);
+  else if(sort==='price-high') filteredItems.sort((a,b)=>b.value-a.value);
+  else if(sort==='trending') filteredItems.sort((a,b)=>b.views-a.views);
+  else filteredItems.sort((a,b)=>a.days-b.days);
+  
+  currentPage = 1;
+  renderBrowse();
+}
+
+function clearFilters(){
+  document.querySelectorAll('input[type=checkbox]').forEach(c=>c.checked=false);
+  document.getElementById('search-input').value='';
+  document.getElementById('sort-select').value='newest';
+  applyFilters();
+}
+
+function filterByCategory(cat){
+  showPage('browse');
+  setTimeout(()=>applyFilters(),100);
+}
+
+function heroSearch(){
+  const q = document.getElementById('hero-search').value;
+  if(q) document.getElementById('search-input').value=q;
+  showPage('browse');
+  setTimeout(()=>applyFilters(),100);
+}
+
+// INIT
+renderHome();
+</script>
+</body>
+</html>

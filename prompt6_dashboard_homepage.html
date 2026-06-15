@@ -1,0 +1,330 @@
+
+<style>
+  .root { font-family: var(--font-mono); padding: 1.5rem 0; }
+  .badge { display: inline-block; font-size: 11px; font-weight: 500; padding: 3px 10px; border-radius: 20px; margin-right: 6px; }
+  .b-teal { background: #E1F5EE; color: #0F6E56; }
+  .b-purple { background: #EEEDFE; color: #3C3489; }
+  .b-amber { background: #FAEEDA; color: #854F0B; }
+  .b-blue { background: #E6F1FB; color: #185FA5; }
+  .b-coral { background: #FAECE7; color: #993C1D; }
+  .b-green { background: #EAF3DE; color: #3B6D11; }
+  .section { border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 1.25rem 1.5rem; margin-bottom: 1rem; background: var(--color-background-primary); }
+  .section-header { display: flex; align-items: center; gap: 10px; margin-bottom: 1rem; }
+  .section-icon { font-size: 18px; color: var(--color-text-secondary); }
+  .section-title { font-size: 13px; font-weight: 500; color: var(--color-text-primary); text-transform: uppercase; letter-spacing: 0.06em; }
+  .prompt-box { background: var(--color-background-tertiary); border-radius: var(--border-radius-md); padding: 1rem 1.25rem; font-size: 13px; line-height: 1.8; color: var(--color-text-primary); white-space: pre-wrap; word-break: break-word; border: 0.5px solid var(--color-border-tertiary); max-height: 480px; overflow-y: auto; }
+  .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; margin-bottom: 1rem; }
+  .feature-card { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 0.85rem 1rem; border: 0.5px solid var(--color-border-tertiary); }
+  .fc-label { font-size: 11px; color: var(--color-text-secondary); margin-bottom: 4px; }
+  .fc-value { font-size: 13px; font-weight: 500; color: var(--color-text-primary); }
+  .checklist { list-style: none; padding: 0; margin: 0; }
+  .checklist li { display: flex; align-items: flex-start; gap: 8px; font-size: 13px; color: var(--color-text-primary); padding: 5px 0; border-bottom: 0.5px solid var(--color-border-tertiary); line-height: 1.55; }
+  .checklist li:last-child { border-bottom: none; }
+  .ci { color: #1D9E75; font-size: 15px; margin-top: 1px; flex-shrink: 0; }
+  .copy-btn { display: flex; align-items: center; gap: 6px; font-size: 12px; padding: 6px 14px; border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-secondary); background: transparent; color: var(--color-text-secondary); cursor: pointer; margin-top: 0.75rem; transition: background 0.15s; }
+  .copy-btn:hover { background: var(--color-background-secondary); color: var(--color-text-primary); }
+  .divider { border: none; border-top: 0.5px solid var(--color-border-tertiary); margin: 1.25rem 0; }
+  .tag-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 0.5rem; }
+  .stack-tag { font-size: 11px; background: var(--color-background-secondary); color: var(--color-text-secondary); border: 0.5px solid var(--color-border-tertiary); border-radius: 20px; padding: 3px 10px; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  @media (max-width: 480px) { .two-col { grid-template-columns: 1fr; } }
+  .sub-section { margin-bottom: 0.75rem; }
+  .sub-label { font-size: 11px; color: var(--color-text-secondary); margin-bottom: 6px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; }
+</style>
+
+<div class="root">
+  <h2 class="sr-only">Prompt 6: User Dashboard and Mobile-first Homepage for Clothing Swap Marketplace</h2>
+
+  <div class="section">
+    <div class="section-header">
+      <i class="ti ti-layout-dashboard section-icon" aria-hidden="true"></i>
+      <span class="section-title">Prompt 6 — Dashboard & Homepage</span>
+      <span class="badge b-teal">React</span>
+      <span class="badge b-purple">Tailwind CSS</span>
+      <span class="badge b-green">Mobile-first</span>
+      <span class="badge b-amber">Real Data</span>
+    </div>
+
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="fc-label">Page 1</div>
+        <div class="fc-value">User Dashboard (4 tabs)</div>
+      </div>
+      <div class="feature-card">
+        <div class="fc-label">Page 2</div>
+        <div class="fc-value">Homepage (mobile-first)</div>
+      </div>
+      <div class="feature-card">
+        <div class="fc-label">Data</div>
+        <div class="fc-value">Real backend API</div>
+      </div>
+      <div class="feature-card">
+        <div class="fc-label">Styling</div>
+        <div class="fc-value">Tailwind CSS</div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <div class="section-header" style="margin-bottom: 0.5rem;">
+      <i class="ti ti-clipboard-text section-icon" aria-hidden="true"></i>
+      <span class="section-title">Full Prompt Text</span>
+    </div>
+
+    <div class="prompt-box" id="promptText">You are building Prompt 6 of a Clothing Exchange & Swap Marketplace (MERN + React + Tailwind CSS). The project already has: user auth, item listing with image upload, swap request flow, real-time chat, and a notifications system (Prompts 1–5).
+
+─── PAGE 1: USER DASHBOARD ──────────────────────────────────────
+
+Route: /dashboard (protected, requires auth)
+
+A. Stat Cards Row (top of page)
+  Fetch from GET /api/users/me/stats → { totalListed, successfulSwaps, trustScore }
+  Render three summary cards side by side (stack on mobile):
+    • Total Items Listed    — icon: ti-shirt
+    • Successful Swaps     — icon: ti-arrows-exchange
+    • Trust Score          — shown as "X / 5.0 ⭐", colored green if ≥4, amber if 2–3.9, red if <2
+
+B. Tab Navigation (My Listings | Swap Requests | Saved Items | Swap History)
+  Use a sticky tab bar below the stat cards. Active tab has a green underline indicator.
+  Persist active tab in URL query param: /dashboard?tab=requests
+
+── Tab 1: My Listings ──
+  Fetch: GET /api/items?owner=me
+  Sub-tabs (pill style): All | Active | Swapped | Draft
+  Each listing shown as a compact horizontal card:
+    - Thumbnail (60x60px, object-cover, rounded-lg)
+    - Title, category badge, condition chip
+    - Status chip: Active (green), Swapped (purple), Draft (gray)
+    - Action buttons: Edit (navigates to /items/:id/edit), Delete (confirm modal), Relist if Swapped
+  Empty state: illustration placeholder + "List your first item" CTA button
+
+── Tab 2: Swap Requests ──
+  Fetch: GET /api/swaps?type=incoming and GET /api/swaps?type=outgoing (parallel)
+  Two collapsible sections: "Incoming Requests" and "My Outgoing Requests"
+  Each swap card shows:
+    - Other user's avatar + name + location
+    - Their offered item thumbnail + title
+    - Your item thumbnail + title (the one they want)
+    - Status chip: Pending (amber), Accepted (green), Declined (red), Completed (blue)
+    - For incoming + Pending: Accept and Decline buttons → call PATCH /api/swaps/:id/status
+    - For any status: "Open Chat" button → navigate to /chat/:swapId
+  Empty state per section with contextual message
+
+── Tab 3: Saved Items ──
+  Fetch: GET /api/users/me/saved
+  Masonry-style grid (2 cols mobile, 3 cols desktop) of saved item cards:
+    - Item image, title, owner avatar + name, condition badge
+    - "Request Swap" button → navigates to item detail page
+    - Unsave button (heart icon, filled) → DELETE /api/users/me/saved/:itemId, optimistic UI remove
+  Empty state: "Browse listings and save items you love"
+
+── Tab 4: Swap History ──
+  Fetch: GET /api/swaps?status=completed
+  Chronological list of completed swaps:
+    - Swap date, both items exchanged (thumbnail + title each side)
+    - Partner avatar + name
+    - Review prompt: if no review given yet → show "Leave a Review" button
+      → opens inline review form: star rating (1–5) + text comment → POST /api/reviews
+    - If review already given → show the submitted stars + comment (read-only)
+  Empty state: "Your completed swaps will appear here"
+
+─── PAGE 2: HOMEPAGE (MOBILE-FIRST) ─────────────────────────────
+
+Route: / (public)
+
+A. Navbar
+  - Logo left, nav links center (Browse, How it Works, About), auth buttons right
+  - Mobile: hamburger menu → slide-down drawer
+  - Sticky on scroll, add subtle shadow after scrolling 60px
+
+B. Hero Section
+  - Full-width, min-height 90vh on desktop / 70vh on mobile
+  - Background: soft green gradient mesh (CSS only, no image dependency)
+  - Headline: "Swap Clothes. Save the Planet." (large, bold, animated fade-up on load)
+  - Subheadline: "Give your wardrobe a second life — trade directly with people near you."
+  - Two CTAs: "Start Swapping" (primary, green filled) + "Browse Listings" (secondary, outlined)
+  - Floating item card preview (absolutely positioned, CSS animation: gentle float up/down)
+
+C. How It Works — 3 Steps
+  - Section title: "How SwapStyle Works"
+  - Three cards in a row (stack vertically on mobile):
+      Step 1 — List: "Upload photos and describe what you want to swap"  icon: ti-camera
+      Step 2 — Browse: "Find items you love from people near you"        icon: ti-search
+      Step 3 — Swap: "Send a swap request and exchange directly"         icon: ti-arrows-exchange
+  - Animated connecting dashed line between steps (desktop only, CSS)
+  - Each step card: step number circle, icon, bold title, short description
+
+D. Featured Listings Grid
+  - Section title: "Fresh Listings Near You"
+  - Fetch: GET /api/items?limit=8&sort=newest (call on mount)
+  - Responsive grid: 1 col (mobile) → 2 col (sm) → 4 col (lg)
+  - Each card: image (aspect-ratio: 3/4, object-cover), title, condition badge, owner chip (avatar + name), "View Item" button
+  - Skeleton loading state (pulse animation) while fetching
+  - "See All Listings" button below grid → navigates to /browse
+
+E. Sustainability Counter
+  - Full-width green-tinted banner section
+  - Fetch: GET /api/stats/sustainability → { itemsSaved, co2Saved, waterSaved }
+  - Three animated counters (count up from 0 on scroll into view using IntersectionObserver):
+      🌱 X items saved from landfill
+      💧 X litres of water conserved
+      🌍 X kg of CO₂ avoided
+  - Short copy below: "Every swap is a small act of climate action."
+
+F. Testimonials Strip
+  - Section title: "What Swappers Say"
+  - Fetch: GET /api/reviews?featured=true&limit=4
+  - Horizontal scroll snap on mobile, 4-column grid on desktop
+  - Each card: quote text, star rating, user avatar + name + city
+  - Fallback: hardcode 3 placeholder testimonials if API returns empty
+
+G. Footer
+  - Logo + tagline left
+  - Links: About, FAQ, Contact, Privacy Policy
+  - Social icons: Instagram, Twitter/X, Facebook (ti icons)
+  - "© 2025 SwapStyle. Wear it forward." tagline
+
+─── BACKEND ROUTES NEEDED ───────────────────────────────────────
+
+Add these if not already present:
+  GET /api/users/me/stats         → { totalListed, successfulSwaps, trustScore }
+  GET /api/users/me/saved         → array of saved items (populated)
+  DELETE /api/users/me/saved/:id  → remove from saved list
+  GET /api/swaps?type=incoming    → filter by receiver = currentUser
+  GET /api/swaps?type=outgoing    → filter by requester = currentUser
+  GET /api/swaps?status=completed → filter completed swaps for current user
+  GET /api/items?owner=me         → items belonging to current user
+  GET /api/stats/sustainability   → aggregate counts from swap collection
+  GET /api/reviews?featured=true  → top-rated reviews, limit param supported
+  POST /api/reviews               → { swapId, rating, comment }
+
+─── DELIVERABLES ─────────────────────────────────────────────────
+
+Provide complete code for:
+
+  Dashboard page:
+    pages/Dashboard.jsx              (tab routing, stat cards, tab container)
+    components/dashboard/StatCards.jsx
+    components/dashboard/MyListings.jsx
+    components/dashboard/SwapRequests.jsx
+    components/dashboard/SavedItems.jsx
+    components/dashboard/SwapHistory.jsx
+    components/dashboard/ReviewForm.jsx  (inline star rating + comment)
+
+  Homepage:
+    pages/Home.jsx                   (assembles all sections)
+    components/home/HeroSection.jsx
+    components/home/HowItWorks.jsx
+    components/home/FeaturedListings.jsx
+    components/home/SustainabilityCounter.jsx
+    components/home/Testimonials.jsx
+    components/home/Footer.jsx
+    components/shared/ItemCard.jsx   (reusable card used in grid + saved items)
+    components/shared/StatusChip.jsx (reusable: Pending/Active/Completed etc.)
+
+  Backend additions:
+    routes/statsRoutes.js
+    controllers/statsController.js
+    additions to userRoutes.js and swapRoutes.js per routes listed above
+
+Follow these constraints:
+  - All Tailwind: no custom CSS files; use Tailwind utility classes throughout
+  - Mobile-first breakpoints: default = mobile, sm: tablet, lg: desktop
+  - Use axios with the existing api.js interceptor (attaches JWT automatically)
+  - Use React Query (useQuery / useMutation) for all data fetching and cache invalidation
+  - Use React Router v6 (useNavigate, useSearchParams for tab persistence)
+  - Skeleton loaders on every data-fetched section (no blank flashes)
+  - All destructive actions (delete listing, decline swap) use a confirmation modal
+  - Reuse existing auth context (useAuth hook) to get currentUser
+  - Optimistic UI updates for: unsave item, accept/decline swap status chips</div>
+
+    <button class="copy-btn" onclick="copyPrompt()">
+      <i class="ti ti-copy" aria-hidden="true"></i>
+      Copy full prompt
+    </button>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <i class="ti ti-checklist section-icon" aria-hidden="true"></i>
+      <span class="section-title">What this prompt covers</span>
+    </div>
+    <div class="two-col">
+      <div>
+        <div class="sub-label">Dashboard</div>
+        <ul class="checklist">
+          <li><i class="ti ti-circle-check ci" aria-hidden="true"></i><span>Stat cards — listed, swaps, trust score</span></li>
+          <li><i class="ti ti-circle-check ci" aria-hidden="true"></i><span>My Listings with status sub-tabs + edit/delete</span></li>
+          <li><i class="ti ti-circle-check ci" aria-hidden="true"></i><span>Swap Requests — incoming & outgoing collapsible</span></li>
+          <li><i class="ti ti-circle-check ci" aria-hidden="true"></i><span>Saved Items — masonry grid, optimistic unsave</span></li>
+          <li><i class="ti ti-circle-check ci" aria-hidden="true"></i><span>Swap History + inline review form (star rating)</span></li>
+          <li><i class="ti ti-circle-check ci" aria-hidden="true"></i><span>Tab state persisted in URL query param</span></li>
+        </ul>
+      </div>
+      <div>
+        <div class="sub-label">Homepage</div>
+        <ul class="checklist">
+          <li><i class="ti ti-circle-check ci" aria-hidden="true"></i><span>Hero — gradient bg, fade-up animation, floating card</span></li>
+          <li><i class="ti ti-circle-check ci" aria-hidden="true"></i><span>How It Works — 3-step with dashed connector line</span></li>
+          <li><i class="ti ti-circle-check ci" aria-hidden="true"></i><span>Featured grid — real API, skeleton loaders, 4 cols</span></li>
+          <li><i class="ti ti-circle-check ci" aria-hidden="true"></i><span>Sustainability counter — IntersectionObserver count-up</span></li>
+          <li><i class="ti ti-circle-check ci" aria-hidden="true"></i><span>Testimonials — scroll-snap mobile, API + fallback</span></li>
+          <li><i class="ti ti-circle-check ci" aria-hidden="true"></i><span>Sticky navbar + hamburger drawer + footer</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <i class="ti ti-layers-intersect section-icon" aria-hidden="true"></i>
+      <span class="section-title">Files to be generated</span>
+    </div>
+    <div class="sub-section">
+      <div class="sub-label">Dashboard components</div>
+      <div class="tag-row">
+        <span class="stack-tag">pages/Dashboard.jsx</span>
+        <span class="stack-tag">StatCards.jsx</span>
+        <span class="stack-tag">MyListings.jsx</span>
+        <span class="stack-tag">SwapRequests.jsx</span>
+        <span class="stack-tag">SavedItems.jsx</span>
+        <span class="stack-tag">SwapHistory.jsx</span>
+        <span class="stack-tag">ReviewForm.jsx</span>
+      </div>
+    </div>
+    <div class="sub-section">
+      <div class="sub-label">Homepage components</div>
+      <div class="tag-row">
+        <span class="stack-tag">pages/Home.jsx</span>
+        <span class="stack-tag">HeroSection.jsx</span>
+        <span class="stack-tag">HowItWorks.jsx</span>
+        <span class="stack-tag">FeaturedListings.jsx</span>
+        <span class="stack-tag">SustainabilityCounter.jsx</span>
+        <span class="stack-tag">Testimonials.jsx</span>
+        <span class="stack-tag">Footer.jsx</span>
+      </div>
+    </div>
+    <div class="sub-section">
+      <div class="sub-label">Shared + Backend</div>
+      <div class="tag-row">
+        <span class="stack-tag">ItemCard.jsx</span>
+        <span class="stack-tag">StatusChip.jsx</span>
+        <span class="stack-tag">statsRoutes.js</span>
+        <span class="stack-tag">statsController.js</span>
+        <span class="stack-tag">userRoutes additions</span>
+        <span class="stack-tag">swapRoutes additions</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function copyPrompt() {
+  const text = document.getElementById('promptText').innerText;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.querySelector('.copy-btn');
+    btn.innerHTML = '<i class="ti ti-check" aria-hidden="true"></i> Copied!';
+    setTimeout(() => { btn.innerHTML = '<i class="ti ti-copy" aria-hidden="true"></i> Copy full prompt'; }, 2200);
+  });
+}
+</script>

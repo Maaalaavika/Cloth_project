@@ -1,0 +1,213 @@
+
+<style>
+  .root { font-family: var(--font-mono); padding: 1.5rem 0; }
+  .badge { display: inline-block; font-size: 11px; font-weight: 500; padding: 3px 10px; border-radius: 20px; margin-right: 6px; }
+  .b-teal { background: #E1F5EE; color: #0F6E56; }
+  .b-purple { background: #EEEDFE; color: #3C3489; }
+  .b-amber { background: #FAEEDA; color: #854F0B; }
+  .b-blue { background: #E6F1FB; color: #185FA5; }
+  .b-coral { background: #FAECE7; color: #993C1D; }
+  .section { border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 1.25rem 1.5rem; margin-bottom: 1rem; background: var(--color-background-primary); }
+  .section-header { display: flex; align-items: center; gap: 10px; margin-bottom: 1rem; }
+  .section-icon { font-size: 18px; color: var(--color-text-secondary); }
+  .section-title { font-size: 13px; font-weight: 500; color: var(--color-text-primary); text-transform: uppercase; letter-spacing: 0.06em; }
+  .prompt-box { background: var(--color-background-tertiary); border-radius: var(--border-radius-md); padding: 1rem 1.25rem; font-size: 13px; line-height: 1.75; color: var(--color-text-primary); white-space: pre-wrap; word-break: break-word; border: 0.5px solid var(--color-border-tertiary); }
+  .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; margin-bottom: 1rem; }
+  .feature-card { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 0.85rem 1rem; border: 0.5px solid var(--color-border-tertiary); }
+  .feature-card .fc-label { font-size: 11px; color: var(--color-text-secondary); margin-bottom: 4px; }
+  .feature-card .fc-value { font-size: 13px; font-weight: 500; color: var(--color-text-primary); }
+  .checklist { list-style: none; padding: 0; margin: 0; }
+  .checklist li { display: flex; align-items: flex-start; gap: 8px; font-size: 13px; color: var(--color-text-primary); padding: 5px 0; border-bottom: 0.5px solid var(--color-border-tertiary); line-height: 1.5; }
+  .checklist li:last-child { border-bottom: none; }
+  .checklist .ci { color: #1D9E75; font-size: 15px; margin-top: 1px; flex-shrink: 0; }
+  .copy-btn { display: flex; align-items: center; gap: 6px; font-size: 12px; padding: 6px 14px; border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-secondary); background: transparent; color: var(--color-text-secondary); cursor: pointer; margin-top: 0.75rem; transition: background 0.15s; }
+  .copy-btn:hover { background: var(--color-background-secondary); color: var(--color-text-primary); }
+  .divider { border: none; border-top: 0.5px solid var(--color-border-tertiary); margin: 1.25rem 0; }
+  .tag-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 0.5rem; }
+  .stack-tag { font-size: 11px; background: var(--color-background-secondary); color: var(--color-text-secondary); border: 0.5px solid var(--color-border-tertiary); border-radius: 20px; padding: 3px 10px; }
+</style>
+
+<div class="root">
+  <h2 class="sr-only">Prompt 5: Real-time Chat & Notifications System for Clothing Swap Marketplace</h2>
+
+  <div class="section">
+    <div class="section-header">
+      <i class="ti ti-message-circle section-icon" aria-hidden="true"></i>
+      <span class="section-title">Prompt 5 — Real-time Chat & Notifications</span>
+      <span class="badge b-teal">Full Stack</span>
+      <span class="badge b-purple">Socket.io</span>
+      <span class="badge b-amber">MongoDB</span>
+    </div>
+
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="fc-label">Frontend</div>
+        <div class="fc-value">React + Socket.io Client</div>
+      </div>
+      <div class="feature-card">
+        <div class="fc-label">Backend</div>
+        <div class="fc-value">Express + Socket.io Server</div>
+      </div>
+      <div class="feature-card">
+        <div class="fc-label">Database</div>
+        <div class="fc-value">MongoDB (Mongoose)</div>
+      </div>
+      <div class="feature-card">
+        <div class="fc-label">Email</div>
+        <div class="fc-value">Nodemailer (optional)</div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <div class="section-header" style="margin-bottom: 0.5rem;">
+      <i class="ti ti-clipboard-text section-icon" aria-hidden="true"></i>
+      <span class="section-title">Full Prompt Text</span>
+    </div>
+
+    <div class="prompt-box" id="promptText">You are building Prompt 5 of a Clothing Exchange & Swap Marketplace (MERN Stack + Socket.io). The project already has: user auth, item listing, swap request flow, and profile pages (Prompts 1–4).
+
+─── PART A: IN-APP REAL-TIME CHAT ───────────────────────────────
+
+Goal: Each swap request has its own private chat thread between the two users involved.
+
+Backend (Express + Socket.io):
+1. Create a Chat model in MongoDB:
+   - Fields: swapRequestId (ref SwapRequest), messages: [{ sender (ref User), text, imageUrl, readBy: [userId], createdAt }]
+2. Socket.io server setup (server.js):
+   - On connection: authenticate user via JWT from socket handshake query
+   - joinRoom(swapRequestId): join a socket room named after the swapRequestId
+   - sendMessage(swapRequestId, text, imageUrl): save message to DB, emit to room
+   - markRead(swapRequestId): update readBy for all messages not read by this user
+3. REST API routes (chatRoutes.js):
+   - GET /api/chat/:swapRequestId — fetch full chat history (auth required, only swap participants)
+
+Frontend (React):
+1. ChatWindow.jsx component:
+   - Props: swapRequestId, currentUserId, otherUser
+   - Connects to socket on mount, joins the room, disconnects on unmount
+   - Displays scrollable message list: right-aligned (sender), left-aligned (receiver)
+   - Show read receipt: "Seen" under last sent message if other user has readBy entry
+   - Image sharing: small file input, convert to base64, send as imageUrl
+   - Auto-scroll to latest message
+2. NavBar unread badge:
+   - On socket connect, listen for unreadCount event (total unread messages across all chats)
+   - Show red badge number on the chat icon in navbar; clear on chat open
+
+─── PART B: NOTIFICATIONS SYSTEM ────────────────────────────────
+
+Goal: Notify users of key swap lifecycle events, both in-app and via email.
+
+Trigger these 4 notification types:
+  • NEW_SWAP_REQUEST  — someone sent you a swap request
+  • REQUEST_ACCEPTED  — your swap request was accepted
+  • REQUEST_DECLINED  — your swap request was declined
+  • NEW_MESSAGE       — you received a new chat message (debounce: only if chat not open)
+  • SWAP_COMPLETED    — both parties confirmed; swap marked done
+
+Backend:
+1. Notification model (MongoDB):
+   - Fields: recipient (ref User), type (enum above), message (string), relatedSwap (ref SwapRequest), isRead (Boolean, default false), createdAt
+2. createNotification(userId, type, message, swapId) utility function — saves to DB, emits socket event "newNotification" to that user's personal room (room = userId)
+3. Call createNotification() in the right places:
+   - swapController.js: on create → notify item owner; on accept/decline → notify requester; on complete → notify both
+   - chatController.js (socket): on sendMessage → notify recipient if not in chat room
+4. REST API:
+   - GET /api/notifications — get all notifications for logged-in user (sorted newest first)
+   - PATCH /api/notifications/:id/read — mark one as read
+   - PATCH /api/notifications/read-all — mark all as read
+5. Nodemailer (optional, toggle via .env EMAIL_NOTIFICATIONS=true):
+   - Send a plain-text email on NEW_SWAP_REQUEST and SWAP_COMPLETED
+   - Use a transporter configured from SMTP env vars (EMAIL_HOST, EMAIL_PORT, EMAIL_USER, EMAIL_PASS)
+
+Frontend (React):
+1. NotificationBell.jsx (navbar):
+   - Bell icon with badge showing unread count
+   - On click: dropdown panel showing last 10 notifications
+   - Each item: icon by type, message text, timestamp (time-ago format), gray if read
+   - Click a notification → mark as read + navigate to relevant swap page
+   - "Mark all read" button at top of dropdown
+2. Socket listener in a useNotifications() custom hook:
+   - On mount: fetch notifications via GET /api/notifications
+   - Listen for "newNotification" socket event → prepend to list, increment badge
+   - Expose { notifications, unreadCount, markRead, markAllRead }
+
+─── DELIVERABLES ─────────────────────────────────────────────────
+
+Provide complete code for:
+  Backend:  models/Chat.js, models/Notification.js, utils/createNotification.js,
+            routes/chatRoutes.js, routes/notificationRoutes.js,
+            socket/chatSocket.js (Socket.io event handlers),
+            and relevant additions to server.js
+
+  Frontend: components/ChatWindow.jsx, components/NotificationBell.jsx,
+            hooks/useNotifications.js, and navbar badge integration snippet
+
+Follow these constraints:
+  - Auth middleware: protect all REST routes with existing verifyToken middleware
+  - Socket auth: verify JWT on handshake; reject unauthenticated connections
+  - Only swap participants may access a chat thread (enforce server-side)
+  - Use existing User, SwapRequest, Item Mongoose models from earlier prompts
+  - Tailwind CSS for all new components (consistent with existing UI)
+  - Include socket cleanup (disconnect, off) in all React useEffect returns</div>
+
+    <button class="copy-btn" onclick="copyPrompt()">
+      <i class="ti ti-copy" aria-hidden="true"></i>
+      Copy full prompt
+    </button>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <i class="ti ti-checklist section-icon" aria-hidden="true"></i>
+      <span class="section-title">What this prompt covers</span>
+    </div>
+    <ul class="checklist">
+      <li><i class="ti ti-circle-check ci" aria-hidden="true"></i><span><strong>Chat model</strong> — MongoDB schema with messages, readBy, imageUrl fields</span></li>
+      <li><i class="ti ti-circle-check ci" aria-hidden="true"></i><span><strong>Socket.io server</strong> — JWT auth on handshake, swap rooms, sendMessage, markRead events</span></li>
+      <li><i class="ti ti-circle-check ci" aria-hidden="true"></i><span><strong>ChatWindow.jsx</strong> — real-time messages, read receipts, image sharing, auto-scroll</span></li>
+      <li><i class="ti ti-circle-check ci" aria-hidden="true"></i><span><strong>Unread badge</strong> — navbar chat icon with live unread count from socket</span></li>
+      <li><i class="ti ti-circle-check ci" aria-hidden="true"></i><span><strong>Notification model</strong> — 5 trigger types stored in MongoDB</span></li>
+      <li><i class="ti ti-circle-check ci" aria-hidden="true"></i><span><strong>createNotification utility</strong> — called from swap & chat controllers</span></li>
+      <li><i class="ti ti-circle-check ci" aria-hidden="true"></i><span><strong>NotificationBell.jsx</strong> — dropdown with mark-read, time-ago, type icons</span></li>
+      <li><i class="ti ti-circle-check ci" aria-hidden="true"></i><span><strong>useNotifications() hook</strong> — socket listener + REST fetch combined</span></li>
+      <li><i class="ti ti-circle-check ci" aria-hidden="true"></i><span><strong>Nodemailer</strong> — optional email on new swap request & swap completion</span></li>
+      <li><i class="ti ti-circle-check ci" aria-hidden="true"></i><span><strong>Security</strong> — participant-only chat access enforced server-side</span></li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <i class="ti ti-layers-intersect section-icon" aria-hidden="true"></i>
+      <span class="section-title">Files to be generated</span>
+    </div>
+    <div style="margin-bottom: 0.5rem; font-size: 12px; color: var(--color-text-secondary);">Backend</div>
+    <div class="tag-row" style="margin-bottom: 1rem;">
+      <span class="stack-tag">models/Chat.js</span>
+      <span class="stack-tag">models/Notification.js</span>
+      <span class="stack-tag">utils/createNotification.js</span>
+      <span class="stack-tag">routes/chatRoutes.js</span>
+      <span class="stack-tag">routes/notificationRoutes.js</span>
+      <span class="stack-tag">socket/chatSocket.js</span>
+      <span class="stack-tag">server.js (additions)</span>
+    </div>
+    <div style="margin-bottom: 0.5rem; font-size: 12px; color: var(--color-text-secondary);">Frontend</div>
+    <div class="tag-row">
+      <span class="stack-tag">ChatWindow.jsx</span>
+      <span class="stack-tag">NotificationBell.jsx</span>
+      <span class="stack-tag">hooks/useNotifications.js</span>
+      <span class="stack-tag">Navbar badge snippet</span>
+    </div>
+  </div>
+</div>
+
+<script>
+function copyPrompt() {
+  const text = document.getElementById('promptText').innerText;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.querySelector('.copy-btn');
+    btn.innerHTML = '<i class="ti ti-check" aria-hidden="true"></i> Copied!';
+    setTimeout(() => { btn.innerHTML = '<i class="ti ti-copy" aria-hidden="true"></i> Copy full prompt'; }, 2000);
+  });
+}
+</script>
